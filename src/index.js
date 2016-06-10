@@ -2,9 +2,10 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './components/app'
 import { AppContainer } from 'react-hot-loader'
-
+import injectTapEventPlugin from 'react-tap-event-plugin'
 require('./stylesheets/main.sass')
 
+injectTapEventPlugin()
 ReactDOM.render(<AppContainer component={App} />, document.getElementById('root'))
 
 if (module.hot) {

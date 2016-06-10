@@ -12,7 +12,7 @@ const PATHS = {
 const common = {
   devtool: 'eval',
   entry: [
-    'webpack-dev-server/client?http://0.0.0.0:3000',
+    'webpack-dev-server/client?http://0.0.0.0:8080',
     'webpack/hot/only-dev-server',
     'react-hot-loader/patch',
     './src/index'
