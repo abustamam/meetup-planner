@@ -1,18 +1,40 @@
 import React, { Component } from 'react'
 import Header from './header'
 import Main from './main'
-import getMuiTheme from 'material-ui/styles/getMuiTheme'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import userStore from './../stores/userstore.js'
+
+function getUserState() {
+  return {
+    allUsers: userStore.getAll()
+  }
+}
 
 export default class App extends Component {
+  constructor(props) {
+    super(props)
+    this.state = getUserState()
+  }
+
+  componentDidMount() {
+      userStore.addChangeListener(this._onChange)
+  }
+
+  componentWillMount() {
+      userStore.removeChangeListener(this._onChange)  
+  }
+
   render() {
     return (
-    	<MuiThemeProvider muiTheme={getMuiTheme()}>
-	    	<div className="app">
-	    		<Header />
-	    		<Main />
-	    	</div>
-    	</MuiThemeProvider>
+    	<div className="app">
+    		<Header />
+    		<Main 
+          allUsers={this.state.allUsers}
+        />
+    	</div>
     )
+  }
+
+  _onChange() {
+    this.setState(getUserState())
   }
 }
