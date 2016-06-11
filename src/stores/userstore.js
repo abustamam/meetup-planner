@@ -14,6 +14,7 @@ function create(user) {
 		id: id,
 		...user
 	}
+	console.log(_users)
 }
 
 function update(id, updates) {
@@ -30,32 +31,10 @@ function destroy(id) {
   _.unset(_users, id)
 }
 
-AppDispatcher.register(action => {
-	let text
-
-	switch(action.actionType) {
-		case UserConstants.USER_CREATE:
-			text = _.trim(action.text)
-			if (text) {
-				create(text)
-				UserStore.emitChange()
-			}
-			break
-		case UserConstants.USER_UPDATE:
-			text = _.trim(action.text)
-			if (text) {
-				update(action.id, {text})
-				UserStore.emitChange()
-			}
-			break
-		case UserConstants.USER_DESTROY:
-			destroy(action.id)
-			UserStore.emitChange()
-			break
+class UserStore extends EventEmitter {
+	constructor(props) {
+		super(props)
 	}
-})
-
-export default class UserStore extends EventEmitter {
 	getAll() {
 		return _users
 	}
@@ -72,3 +51,29 @@ export default class UserStore extends EventEmitter {
 		this.removeListener(CHANGE_EVENT, cb)
 	}
 }
+
+const userStore = new UserStore()
+
+AppDispatcher.register(action => {
+	console.log(action)
+	switch(action.type) {
+		case UserConstants.USER_CREATE:
+			console.log('CREATING', action.user)
+			create(action.user)
+			userStore.emitChange()
+			break
+		case UserConstants.USER_UPDATE:
+			const user = action.user
+			update(action.id, {user})
+			userStore.emitChange()
+			break
+		case UserConstants.USER_DESTROY:
+			destroy(action.id)
+			userStore.emitChange()
+			break
+	}
+})
+
+
+
+export default userStore

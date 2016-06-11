@@ -45,14 +45,16 @@ class TextField extends React.Component {
     }
 
 	updateValue(e) {
+        const { handleChange, label } = this.props
 		const val = e.target.value
         this.setState({val, error: ''})
+        handleChange(label, val)
     }
 
     render() {
     	const { autofocus, required, label, placeholder, type, errorText, onBlur, onChange } = this.props
         return <div>
-            <label htmlFor={label}>{label}{required ? <sup>*</sup> : null}</label>
+            <label htmlFor={label}>{_.startCase(label)}{required ? <sup>*</sup> : null}</label>
             { this.state.error ? <span> {this.state.error}</span> : null}
         	<input
                 id={label}

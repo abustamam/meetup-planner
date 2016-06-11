@@ -16,11 +16,11 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-      userStore.addChangeListener(this._onChange)
+      userStore.addChangeListener(::this._onChange)
   }
 
   componentWillMount() {
-      userStore.removeChangeListener(this._onChange)  
+      userStore.removeChangeListener(::this._onChange)  
   }
 
   render() {
