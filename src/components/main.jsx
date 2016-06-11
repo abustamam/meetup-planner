@@ -46,7 +46,7 @@ class Main extends React.Component {
 
     render() {
         return <div className="main">
-            <form onSubmit={(e) => this.tryCreate(e)}>
+            <form className="form" onSubmit={(e) => this.tryCreate(e)}>
                 <TextField 
                     autofocus={true}
                     required={true}
@@ -90,6 +90,7 @@ class Main extends React.Component {
                     handleChange={::this.handleChange}
                     tryUpdate={this.state.tryUpdate}
                 />
+                <span><sup>*</sup>Required</span>
                 <button type="submit">Submit</button>
             </form>
         </div>

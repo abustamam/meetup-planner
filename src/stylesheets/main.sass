@@ -1,3 +1,6 @@
+$primary: #F44336
+// $secondary: \\\\\
+
 html
 	box-sizing: border-box
 
@@ -12,11 +15,10 @@ body
 	flex-direction: column
 
 header
-	width: 100%
 	display: flex
 	justify-content: center
 	align-items: center
-	background: #ED1C40
+	background: $primary
 	color: #eee
 	font-weight: bold
 	font-size: 20px
@@ -28,8 +30,16 @@ header
 	border: 1px solid black
 	padding: 25px
 
+form
+	display: flex
+	flex-direction: column
+
+.text-field
+	margin: 10px
+	display: flex
+	flex-direction: column
+
 input
-	width: calc(100% - 20px)
 	position: relative
 	padding: 10px
 	border: none
@@ -37,5 +47,24 @@ input
 	border-bottom: solid 2px #eee
 	transition: border 0.3s
 	&:focus, &.focus
-		border-bottom: solid 2px #ED1C40
+		border-bottom: solid 2px $primary
+
+
+input, textarea
+	font-size: 24px
+	padding: 10px
+	color: $primary
+	text-shadow: 0px 0px 0px #000
+	-webkit-text-fill-color: transparent
+	&::-webkit-input-placeholder
+		color: ''
+		text-shadow: none
+		-webkit-text-fill-color: initial
+
+
+
+
+
+
+
 
