@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Header from './header'
 import Main from './main'
 import userStore from './../stores/userstore.js'
+require('./../lib/tota11y.min.js')
 
 function getUserState() {
   return {

@@ -55,7 +55,7 @@ class TextField extends React.Component {
     	const { autofocus, required, label, placeholder, type, errorText, onBlur, onChange } = this.props
         return <div>
             <label htmlFor={label}>{_.startCase(label)}{required ? <sup>*</sup> : null}</label>
-            { this.state.error ? <span> {this.state.error}</span> : null}
+            { (this.state.error || (this.props.tryUpdate && !this.state.val)) ? <span> {this.state.error}</span> : null}
         	<input
                 id={label}
         		ref={c => this.input = c}
