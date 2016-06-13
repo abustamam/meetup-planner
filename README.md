@@ -1,17 +1,17 @@
-This is the boilerplate from which I will create basic React projects. Intended for use of 
-Free Code Campers, but of course anyone is free to use it.
-
-Originally forked from Dan Abramov's [React Hot Boilerplate](https://github.com/gaearon/react-hot-boilerplate)
-but used some instructions from the book [SurviveJS](http://survivejs.com) to get it to deploy properly.
+This app is my project submission for the Senior Web Developer Nanodegree: Project 1: Meetup Event Planner.
 
 ## Features
 
-- Hot reloading
-- Github pages deployment
-- Sass
-- Lean 
+- React/Flux
+- Sass 
 
 ## Instructions for use
+
+### The easy way
+
+Visit my deployed site: http://abustamam.github.io/meetup-planner
+
+### The hard way
 
 - Install dependencies:
 
@@ -25,13 +25,13 @@ npm install
 npm start
 ```
 
-- Try changing things around in `app.jsx` or `main.sass`
+Open http://localhost:8080/ in your favorite web browser.
 
-- To deploy to github, fork your own, then run:
-
-```
-npm run build
-npm run deploy
-```
+## Misc
 
 Bug reports can go to me: [Rasheed Bustamam](rasheed.bustamam@gmail.com)
+
+
+## Resources
+[React Hot Boilerplate](https://github.com/gaearon/react-hot-boilerplate)
+[SurviveJS](http://survivejs.com)
