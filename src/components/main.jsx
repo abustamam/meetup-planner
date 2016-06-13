@@ -27,6 +27,8 @@ class Main extends React.Component {
 
     /**
      * handles changing of the user that is currently being created
+     * @param name: String, attribute name, e.g. "email"
+     * @param value: String, value of prop, e.g. "rasheed.bustamam@gmail.com"
      * @return void
      */
 
@@ -44,6 +46,7 @@ class Main extends React.Component {
     /**
      * attempts to create a new user, throws an error if any required 
      * attributes are not filled in correctly
+     * @param e syntheticEvent
      * @return void
      */
 

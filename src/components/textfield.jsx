@@ -70,6 +70,7 @@ class TextField extends React.Component {
 
     /**
      * update the value and removes errors
+     * @param e: syntheticEvent
      * @return void
      */
 

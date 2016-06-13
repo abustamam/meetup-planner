@@ -3,7 +3,10 @@ import Header from './header'
 import Main from './main'
 import userStore from './../stores/userstore.js'
 require('./../lib/tota11y.min.js')
-
+/**
+ * gets the current userStore and returns all users
+ * @return Object
+ */
 function getUserState() {
   return {
     allUsers: userStore.getAll()
@@ -37,6 +40,11 @@ export default class App extends Component {
       userStore.removeChangeListener(::this._onChange)  
   }
 
+  /**
+   * handles creation of new user
+   * @return void
+   */
+
   render() {
     return (
     	<div className="app">
@@ -47,6 +55,11 @@ export default class App extends Component {
     	</div>
     )
   }
+
+  /**
+   * sets state to the current contents of userStore.allUsers
+   * @return void
+   */
 
   _onChange() {
     this.setState(getUserState())
