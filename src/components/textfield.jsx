@@ -19,11 +19,12 @@ class TextField extends React.Component {
         placeholder: React.PropTypes.string,
         autofocus: React.PropTypes.bool,
         required: React.PropTypes.bool,
-        type: React.PropTypes.string
+        type: React.PropTypes.string,
+        errorVisible: React.PropTypes.bool
     }
 
     state = {
-        errorVisible: false,
+        errorVisible: this.props.errorVisible || false,
         val: '',
         errorText: this.props.errorText || (this.props.required ? `${_.capitalize(this.props.label)} is required.` : '')
     }
@@ -44,6 +45,10 @@ class TextField extends React.Component {
     		this.input.focus()
     	}
 	}
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({errorVisible: nextProps.errorVisible})
+    }
 
     /**
      * check if value is valid, sets state accordingly
@@ -94,7 +99,7 @@ class TextField extends React.Component {
         const { errorVisible, val, errorText } = this.state
         return <div className="text-field">
             <label htmlFor={label}>{_.startCase(label)}{required ? <sup>*</sup> : null}</label>
-            { (errorVisible) ? <span> {errorText}</span> : null}
+            { (errorVisible) ? <span className="errorText"> {errorText}</span> : null}
         	<input
                 id={label}
         		ref={c => this.input = c}

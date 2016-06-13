@@ -19,7 +19,8 @@ class Main extends React.Component {
 
     state = {
         newUser: {},
-        tryUpdate: false
+        tryUpdate: false,
+        errorVisible: false
     }
 
 
@@ -59,6 +60,8 @@ class Main extends React.Component {
         const { name, email, password } = this.state.newUser
         if (name && email && password) {
             this.handleCreate()
+        } else {
+            this.setState({errorVisible: true})
         }
     }
 
@@ -72,7 +75,7 @@ class Main extends React.Component {
             ...this.state.newUser
         }
         create(user)
-        this.setState({newUser: {}})
+        this.setState({newUser: {}, errorVisible: false})
     }
 
     /**
@@ -89,6 +92,7 @@ class Main extends React.Component {
                     label="name"
                     placeholder="John Doe"
                     handleChange={::this.handleChange}
+                    errorVisible={this.state.errorVisible}
                     tryUpdate={this.state.tryUpdate}
                 />
                 <TextField 
@@ -98,6 +102,7 @@ class Main extends React.Component {
                     errorText="Email address is invalid"
                     type="email"
                     handleChange={::this.handleChange}
+                    errorVisible={this.state.errorVisible}
                     tryUpdate={this.state.tryUpdate}
                 />
                 <TextField 
@@ -107,18 +112,21 @@ class Main extends React.Component {
                     errorText="Password must have minimum of 8 characters"
                     type="password"
                     handleChange={::this.handleChange}
+                    errorVisible={this.state.errorVisible}
                     tryUpdate={this.state.tryUpdate}
                 />
                 <TextField 
                     label="employer"
                     placeholder="Google"
                     handleChange={::this.handleChange}
+                    errorVisible={this.state.errorVisible}
                     tryUpdate={this.state.tryUpdate}
                 />
                 <TextField 
                     label="job title"
                     placeholder="Software Engineer"
                     handleChange={::this.handleChange}
+                    errorVisible={this.state.errorVisible}
                     tryUpdate={this.state.tryUpdate}
                 />
                 <TextField 
@@ -126,6 +134,7 @@ class Main extends React.Component {
                     placeholder="mm/dd/yyyy"
                     type="date"
                     handleChange={::this.handleChange}
+                    errorVisible={this.state.errorVisible}
                     tryUpdate={this.state.tryUpdate}
                 />
                 <span><sup>*</sup>Required</span>
