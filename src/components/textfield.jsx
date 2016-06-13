@@ -14,12 +14,32 @@ class TextField extends React.Component {
             val: ''
         }
     }
+
+    static propTypes: {
+        label: React.PropTypes.string.isRequired,
+        placeholder: React.PropTypes.string,
+        autofocus: React.PropTypes.bool,
+        required: React.PropTypes.bool,
+        type: React.PropTypes.string,
+        error: React.PropTypes.string,
+    }
+
+    /*
+     * focus on input box if thie component is set to autofocus
+     * @return void
+     */
+
     componentDidMount() {
     	const { autofocus } = this.props
     	if (autofocus) {
     		this.input.focus()
     	}
 	}
+
+    /**
+     * check if value is valid, sets state accordingly
+     * @return void
+     */
 
 	checkValue() {
         const { type = "text", label, required } = this.props
@@ -42,6 +62,11 @@ class TextField extends React.Component {
         this.setState({errorVisible})
     }
 
+    /**
+     * update the value and removes errors
+     * @return void
+     */
+
 	updateValue(e) {
         const { handleChange, label } = this.props
 		const val = e.target.value
@@ -49,9 +74,14 @@ class TextField extends React.Component {
         handleChange(label, val)
     }
 
+    /**
+     * render the component
+     * @return void
+     */
+
     render() {
     	const { autofocus, required, label, placeholder, type, errorText, onBlur, onChange } = this.props
-        const { errorVisible, error } = this.state
+        const { errorVisible, error, val } = this.state
         return <div className="text-field">
             <label htmlFor={label}>{_.startCase(label)}{required ? <sup>*</sup> : null}</label>
             { (errorVisible) ? <span> {error}</span> : null}
