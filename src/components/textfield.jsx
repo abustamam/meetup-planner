@@ -35,18 +35,6 @@ class TextField extends React.Component {
         this.displayName = 'TextField'
     }
 
-    /*
-     * focus on input box if thie component is set to autofocus
-     * @return {void}
-     */
-
-    componentDidMount() {
-    	const { autofocus } = this.props
-    	if (autofocus) {
-    		this.input.focus()
-    	}
-	}
-
     componentWillReceiveProps(nextProps) {
         this.setState({errorVisible: nextProps.errorVisible})
     }
@@ -95,14 +83,16 @@ class TextField extends React.Component {
      */
 
     render() {
-    	const { required, label, placeholder, type, value } = this.props
+    	const { required, label, placeholder, type, value, autofocus } = this.props
         const { errorVisible, errorText } = this.state
         return <div className="text-field">
             <label htmlFor={label}>{_.startCase(label)}{required ? <sup>*</sup> : null}</label>
             <div className="errorText">{errorVisible ? errorText : ''}</div>
         	<input
                 id={label}
-        		ref={c => this.input = c}
+                autoFocus={autofocus}
+                required={required}
+                autoComplete={label}
         		placeholder={placeholder}
         		type={type} 
                 value={value}
