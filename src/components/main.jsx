@@ -5,20 +5,34 @@ import update from 'react-addons-update'
 import _ from 'lodash'
 
 class Main extends React.Component {
+
+    static defaultProps = {
+        allUsers: {}
+    }
+
+    static propTypes = {
+        allUsers: React.PropTypes.object
+    }
+
+    state = {
+        newUser: {},
+        tryUpdate: false
+    }
+
+
     constructor(props) {
         super(props);
         this.displayName = 'Main'
-        this.state = {
-            newUser: {},
-            tryUpdate: false
-        }
     }
 
-    handleChange(name, value) {
-        const lowerName = _.toLower(name)
+    /**
+     * handles changing of the user that is currently being created
+     * @return void
+     */
 
+    handleChange(name, value) {
         const newObj = update(this.state.newUser, {
-            $merge: {[lowerName]: value}
+            $merge: {[name]: value}
         })
 
         this.setState({
@@ -26,6 +40,12 @@ class Main extends React.Component {
             tryUpdate: false
         })
     }
+
+    /**
+     * attempts to create a new user, throws an error if any required 
+     * attributes are not filled in correctly
+     * @return void
+     */
 
     tryCreate(e) {
         e.preventDefault()
@@ -36,6 +56,11 @@ class Main extends React.Component {
         }
     }
 
+    /**
+     * handles creation of new user
+     * @return void
+     */
+
     handleCreate() {
         const user = {
             ...this.state.newUser
@@ -43,6 +68,11 @@ class Main extends React.Component {
         create(user)
         this.setState({newUser: {}})
     }
+
+    /**
+     * render the component
+     * @return void
+     */
 
     render() {
         return <div className="main">
@@ -59,7 +89,7 @@ class Main extends React.Component {
                     required={true}
                     label="email"
                     placeholder="name@example.com"
-                    error="Email address is invalid"
+                    errorText="Email address is invalid"
                     type="email"
                     handleChange={::this.handleChange}
                     tryUpdate={this.state.tryUpdate}
@@ -68,7 +98,7 @@ class Main extends React.Component {
                     required={true}
                     label="password" 
                     placeholder="Minimum 8 characters"
-                    error="Password must have minimum of 8 characters"
+                    errorText="Password must have minimum of 8 characters"
                     type="password"
                     handleChange={::this.handleChange}
                     tryUpdate={this.state.tryUpdate}

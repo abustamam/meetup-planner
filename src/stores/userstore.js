@@ -14,7 +14,6 @@ function create(user) {
 		id: id,
 		...user
 	}
-	console.log(_users)
 }
 
 function update(id, updates) {
@@ -55,15 +54,15 @@ class UserStore extends EventEmitter {
 const userStore = new UserStore()
 
 AppDispatcher.register(action => {
-	console.log(action)
 	switch(action.type) {
 		case UserConstants.USER_CREATE:
-			console.log('CREATING', action.user)
+			console.log('CREATING', action.user.name)
 			create(action.user)
 			userStore.emitChange()
 			break
 		case UserConstants.USER_UPDATE:
 			const user = action.user
+			console.log('UPDATING', user.name)
 			update(action.id, {user})
 			userStore.emitChange()
 			break

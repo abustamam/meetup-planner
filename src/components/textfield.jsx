@@ -4,24 +4,30 @@ import classnames from 'classnames'
 import _ from 'lodash'
 
 class TextField extends React.Component {
-    constructor(props) {
-        super(props)
-        this.displayName = 'TextField'
-        const { error, label, required } = this.props
-        this.state = {
-            errorVisible: false,
-            error: error || (required ? `${_.capitalize(label)} is required.` : ''),
-            val: ''
-        }
+
+    static defaultProps = {
+        autofocus: false,
+        required: false,
+        type: 'text'
     }
 
-    static propTypes: {
+    static propTypes = {
         label: React.PropTypes.string.isRequired,
         placeholder: React.PropTypes.string,
         autofocus: React.PropTypes.bool,
         required: React.PropTypes.bool,
-        type: React.PropTypes.string,
-        error: React.PropTypes.string,
+        type: React.PropTypes.string
+    }
+
+    state = {
+        errorVisible: false,
+        val: '',
+        errorText: this.props.errorText || (this.props.required ? `${_.capitalize(this.props.label)} is required.` : '')
+    }
+
+    constructor(props) {
+        super(props)
+        this.displayName = 'TextField'
     }
 
     /*
@@ -80,16 +86,16 @@ class TextField extends React.Component {
      */
 
     render() {
-    	const { autofocus, required, label, placeholder, type, errorText, onBlur, onChange } = this.props
-        const { errorVisible, error, val } = this.state
+    	const { autofocus, required, label, placeholder, type, onBlur, onChange } = this.props
+        const { errorVisible, val, errorText } = this.state
         return <div className="text-field">
             <label htmlFor={label}>{_.startCase(label)}{required ? <sup>*</sup> : null}</label>
-            { (errorVisible) ? <span> {error}</span> : null}
+            { (errorVisible) ? <span> {errorText}</span> : null}
         	<input
                 id={label}
         		ref={c => this.input = c}
         		placeholder={placeholder}
-        		type={type || 'text'} 
+        		type={type} 
         		onBlur={() => this.checkValue()}
         		onChange={e => this.updateValue(e)}
     		/>
