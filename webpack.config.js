@@ -10,13 +10,9 @@ const PATHS = {
 }
 
 const common = {
-  devtool: 'eval',
-  entry: [
-    'webpack-dev-server/client?http://0.0.0.0:8080',
-    'webpack/hot/only-dev-server',
-    'react-hot-loader/patch',
-    './src/index'
-  ],
+  entry: {
+    app: PATHS.src
+  },
   output: {
     path: PATHS.build,
     filename: 'bundle.js'
@@ -26,17 +22,17 @@ const common = {
   },
   module: {
     loaders: [{
-      test: /\.js|\.jsx$/,
-      loaders: ['babel'],
-      include: path.join(__dirname, 'src')
+      test: /\.jsx?$/,
+      loaders: ['babel?cacheDirectory'],
+      include: PATHS.src
     },
     {
       test: /\.sass$/,
-      loader: "style!css!sass"
+      loader: 'style!css!sass'
     },
     {
       test: /\.css$/,
-      loaders: "style!css"
+      loaders: 'style!css'
     }]
   }
 };
