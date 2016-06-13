@@ -6,7 +6,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin'
 require('./stylesheets/main.sass')
 
 injectTapEventPlugin()
-ReactDOM.render(<AppContainer component={App} />, document.getElementById('root'))
+ReactDOM.render(<AppContainer><App /></AppContainer>, document.getElementById('root'))
 
 if (module.hot) {
 	module.hot.accept('./components/app', () => {

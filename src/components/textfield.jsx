@@ -11,7 +11,8 @@ class TextField extends React.Component {
     static defaultProps = {
         autofocus: false,
         required: false,
-        type: 'text'
+        type: 'text',
+        value: ''
     }
 
     static propTypes = {
@@ -20,12 +21,12 @@ class TextField extends React.Component {
         autofocus: React.PropTypes.bool,
         required: React.PropTypes.bool,
         type: React.PropTypes.string,
-        errorVisible: React.PropTypes.bool
+        errorVisible: React.PropTypes.bool,
+        value: React.PropTypes.string
     }
 
     state = {
         errorVisible: this.props.errorVisible || false,
-        val: '',
         errorText: this.props.errorText || (this.props.required ? `${_.capitalize(this.props.label)} is required.` : '')
     }
 
@@ -56,21 +57,20 @@ class TextField extends React.Component {
      */
 
 	checkValue() {
-        const { type = "text", label, required } = this.props
-        const { val } = this.state
+        const { type = "text", label, required, value } = this.props
         let errorVisible = true
         if (type === 'email') {
             // test if val is a valid email
             // from http://emailregex.com/
             const eml = new RegExp(/^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i)
-            errorVisible = !eml.test(val)
+            errorVisible = !eml.test(value)
         } else if (type === 'password') {
             // test if val has at least 8 chars
         	const pass = new RegExp(/^.{8,}$/)
-            errorVisible = !pass.test(val)
+            errorVisible = !pass.test(value)
         } else {
             // return true only if field is required and val is empty
-            errorVisible = required && !val
+            errorVisible = required && !value
         }
 
         this.setState({errorVisible})
@@ -85,7 +85,7 @@ class TextField extends React.Component {
 	updateValue(e) {
         const { handleChange, label } = this.props
 		const val = e.target.value
-        this.setState({val, errorVisible: false})
+        this.setState({errorVisible: false})
         handleChange(label, val)
     }
 
@@ -95,8 +95,8 @@ class TextField extends React.Component {
      */
 
     render() {
-    	const { autofocus, required, label, placeholder, type, onBlur, onChange } = this.props
-        const { errorVisible, val, errorText } = this.state
+    	const { required, label, placeholder, type, value } = this.props
+        const { errorVisible, errorText } = this.state
         return <div className="text-field">
             <label htmlFor={label}>{_.startCase(label)}{required ? <sup>*</sup> : null}</label>
             <div className="errorText">{errorVisible ? errorText : ''}</div>
@@ -105,8 +105,9 @@ class TextField extends React.Component {
         		ref={c => this.input = c}
         		placeholder={placeholder}
         		type={type} 
-        		onBlur={() => this.checkValue()}
-        		onChange={e => this.updateValue(e)}
+                value={value}
+        		onBlur={::this.checkValue}
+        		onChange={::this.updateValue}
     		/>
         </div>
     }

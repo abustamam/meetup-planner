@@ -85,16 +85,17 @@ class Main extends React.Component {
      */
 
     render() {
+        const { errorVisible, newUser } = this.state
         return <div className="main">
-            <form className="form" onSubmit={(e) => this.tryCreate(e)}>
+            <form className="form" onSubmit={::this.tryCreate}>
                 <TextField 
                     autofocus={true}
                     required={true}
                     label="name"
                     placeholder="John Doe"
                     handleChange={::this.handleChange}
-                    errorVisible={this.state.errorVisible}
-                    tryUpdate={this.state.tryUpdate}
+                    errorVisible={errorVisible}
+                    value={newUser['name']}
                 />
                 <TextField 
                     required={true}
@@ -103,8 +104,8 @@ class Main extends React.Component {
                     errorText="Email address is invalid"
                     type="email"
                     handleChange={::this.handleChange}
-                    errorVisible={this.state.errorVisible}
-                    tryUpdate={this.state.tryUpdate}
+                    errorVisible={errorVisible}
+                    value={newUser['email']}
                 />
                 <TextField 
                     required={true}
@@ -113,30 +114,30 @@ class Main extends React.Component {
                     errorText="Password must have minimum of 8 characters"
                     type="password"
                     handleChange={::this.handleChange}
-                    errorVisible={this.state.errorVisible}
-                    tryUpdate={this.state.tryUpdate}
+                    errorVisible={errorVisible}
+                    value={newUser['password']}
                 />
                 <TextField 
                     label="employer"
                     placeholder="Google"
                     handleChange={::this.handleChange}
-                    errorVisible={this.state.errorVisible}
-                    tryUpdate={this.state.tryUpdate}
+                    errorVisible={errorVisible}
+                    value={newUser['employer']}
                 />
                 <TextField 
                     label="job title"
                     placeholder="Software Engineer"
                     handleChange={::this.handleChange}
-                    errorVisible={this.state.errorVisible}
-                    tryUpdate={this.state.tryUpdate}
+                    errorVisible={errorVisible}
+                    value={newUser['job title']}
                 />
                 <TextField 
                     label="birthday"
                     placeholder="mm/dd/yyyy"
                     type="date"
                     handleChange={::this.handleChange}
-                    errorVisible={this.state.errorVisible}
-                    tryUpdate={this.state.tryUpdate}
+                    errorVisible={errorVisible}
+                    value={newUser['birthday']}
                 />
                 <span><sup>*</sup>Required</span>
                 <button type="submit">Submit</button>
