@@ -4,6 +4,9 @@ import { create } from './../actions/useractions.js'
 import update from 'react-addons-update'
 import _ from 'lodash'
 
+/** The main part of the app
+  * @extends React.Component
+  */
 class Main extends React.Component {
 
     static defaultProps = {
@@ -27,9 +30,9 @@ class Main extends React.Component {
 
     /**
      * handles changing of the user that is currently being created
-     * @param name: String, attribute name, e.g. "email"
-     * @param value: String, value of prop, e.g. "rasheed.bustamam@gmail.com"
-     * @return void
+     * @param {String} name - attribute name, e.g. "email"
+     * @param {String} value - value of prop, e.g. "rasheed.bustamam@gmail.com"
+     * @return {void}
      */
 
     handleChange(name, value) {
@@ -46,8 +49,8 @@ class Main extends React.Component {
     /**
      * attempts to create a new user, throws an error if any required 
      * attributes are not filled in correctly
-     * @param e syntheticEvent
-     * @return void
+     * @param {syntheticEvent} e - the event
+     * @return {void}
      */
 
     tryCreate(e) {
@@ -61,7 +64,7 @@ class Main extends React.Component {
 
     /**
      * handles creation of new user
-     * @return void
+     * @return {void}
      */
 
     handleCreate() {
@@ -74,7 +77,7 @@ class Main extends React.Component {
 
     /**
      * render the component
-     * @return void
+     * @return {void}
      */
 
     render() {

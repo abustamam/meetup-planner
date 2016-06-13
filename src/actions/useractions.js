@@ -1,6 +1,5 @@
 import AppDispatcher from './../dispatchers/dispatcher'
 import UserConstants from './../constants/userconstants'
-import UserStore from './../stores/userstore'
 
 export function create(user) {
 	AppDispatcher.dispatch({

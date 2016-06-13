@@ -4,14 +4,18 @@ import Main from './main'
 import userStore from './../stores/userstore.js'
 require('./../lib/tota11y.min.js')
 /**
- * gets the current userStore and returns all users
- * @return Object
+ * Gets the current userStore and returns all users
+ * @return {Object}
  */
 function getUserState() {
   return {
     allUsers: userStore.getAll()
   }
 }
+
+/** The entire app
+  * @extends React.Component
+  */
 
 export default class App extends Component {
 
@@ -23,7 +27,7 @@ export default class App extends Component {
 
   /*
    * adds a change listener to the userStore
-   * @return void
+   * @return {void}
    */
 
   componentDidMount() {
@@ -31,9 +35,8 @@ export default class App extends Component {
   }
 
   /*
-   * ensures that listeners are destroyed when component is
-   * unmounted
-   * @return void
+   * ensures that listeners are destroyed when component is unmounted
+   * @return {void}
    */  
 
   componentWillUnmount() {
@@ -42,7 +45,7 @@ export default class App extends Component {
 
   /**
    * handles creation of new user
-   * @return void
+   * @return {void}
    */
 
   render() {
@@ -58,7 +61,7 @@ export default class App extends Component {
 
   /**
    * sets state to the current contents of userStore.allUsers
-   * @return void
+   * @return {void}
    */
 
   _onChange() {

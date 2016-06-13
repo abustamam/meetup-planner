@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom'
 import classnames from 'classnames'
 import _ from 'lodash'
 
+/** A single text field
+  * @extends React.Component
+  */
 class TextField extends React.Component {
 
     static defaultProps = {
@@ -32,7 +35,7 @@ class TextField extends React.Component {
 
     /*
      * focus on input box if thie component is set to autofocus
-     * @return void
+     * @return {void}
      */
 
     componentDidMount() {
@@ -44,7 +47,7 @@ class TextField extends React.Component {
 
     /**
      * check if value is valid, sets state accordingly
-     * @return void
+     * @return {void}
      */
 
 	checkValue() {
@@ -70,8 +73,8 @@ class TextField extends React.Component {
 
     /**
      * update the value and removes errors
-     * @param e: syntheticEvent
-     * @return void
+     * @param {syntheticEvent} e - the synthetic event 
+     * @return {void}
      */
 
 	updateValue(e) {
@@ -83,7 +86,7 @@ class TextField extends React.Component {
 
     /**
      * render the component
-     * @return void
+     * @return {void}
      */
 
     render() {
