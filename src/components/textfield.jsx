@@ -99,7 +99,7 @@ class TextField extends React.Component {
         const { errorVisible, val, errorText } = this.state
         return <div className="text-field">
             <label htmlFor={label}>{_.startCase(label)}{required ? <sup>*</sup> : null}</label>
-            { (errorVisible) ? <span className="errorText"> {errorText}</span> : null}
+            <div className="errorText">{errorVisible ? errorText : ''}</div>
         	<input
                 id={label}
         		ref={c => this.input = c}

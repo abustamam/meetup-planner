@@ -43,6 +43,7 @@ class Main extends React.Component {
 
         this.setState({
             newUser: newObj,
+            errorVisible: false,
             tryUpdate: false
         })
     }
