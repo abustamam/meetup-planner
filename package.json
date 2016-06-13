@@ -5,8 +5,8 @@
   "scripts": {
     "start": "webpack-dev-server",
     "lint": "eslint src",
-    "build": "webpack",
-    "deploy": "npm run build && cp public/index.html build/ && gh-pages -d build"
+    "build": "export NODE_ENV=production && rimraf build && webpack && cp public/index.html build",
+    "deploy": "npm run build && gh-pages -d build"
   },
   "repository": {
     "type": "git",

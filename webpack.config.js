@@ -3,7 +3,8 @@ const webpack = require('webpack')
 const merge = require('webpack-merge')
 const NpmInstallPlugin = require('npm-install-webpack-plugin')
 
-const TARGET = process.env.npm_lifecyle_event
+const TARGET = process.env.npm_lifecyle_event || process.env.NODE_ENV
+console.log(TARGET)
 const PATHS = {
   src: path.join(__dirname, 'src'),
   build: path.join(__dirname, 'build')
@@ -19,7 +20,7 @@ const common = {
   ],
   output: {
     path: PATHS.build,
-    filename: 'bundle.js',
+    filename: 'bundle.js'
   },
   resolve: {
     extensions: ['', '.js', '.jsx']
@@ -41,7 +42,8 @@ const common = {
   }
 };
 
-if (TARGET === 'start' || !TARGET) {
+if (TARGET !== 'production' || !TARGET) {
+  console.log('START', TARGET)
   module.exports = merge(common, {
     devtool: 'eval-source-map',
     devServer: {
@@ -61,6 +63,17 @@ if (TARGET === 'start' || !TARGET) {
   })
 }
 
-if(TARGET === 'build') {
-  module.exports = merge(common, {})
+if(TARGET === 'production') {
+  console.log('BUILD', TARGET)
+  module.exports = merge(common, {
+    output: {
+      path: PATHS.build,
+      filename: 'bundle.js'
+    },
+    plugins: [
+      new webpack.optimize.UglifyJsPlugin({
+        compress: { warnings: false }
+      })
+    ]
+  })
 }
