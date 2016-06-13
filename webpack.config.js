@@ -3,8 +3,7 @@ const webpack = require('webpack')
 const merge = require('webpack-merge')
 const NpmInstallPlugin = require('npm-install-webpack-plugin')
 
-const TARGET = process.env.npm_lifecyle_event || process.env.NODE_ENV
-console.log(TARGET)
+const TARGET = process.env.NODE_ENV || 'development'
 const PATHS = {
   src: path.join(__dirname, 'src'),
   build: path.join(__dirname, 'build')
@@ -42,7 +41,7 @@ const common = {
   }
 };
 
-if (TARGET !== 'production' || !TARGET) {
+if (TARGET === 'development' || !TARGET) {
   console.log('START', TARGET)
   module.exports = merge(common, {
     devtool: 'eval-source-map',
