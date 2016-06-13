@@ -11,16 +11,29 @@ function getUserState() {
 }
 
 export default class App extends Component {
+
+  state = getUserState()
+
   constructor(props) {
     super(props)
-    this.state = getUserState()
   }
+
+  /*
+   * adds a change listener to the userStore
+   * @return void
+   */
 
   componentDidMount() {
       userStore.addChangeListener(::this._onChange)
   }
 
-  componentWillMount() {
+  /*
+   * ensures that listeners are destroyed when component is
+   * unmounted
+   * @return void
+   */  
+
+  componentWillUnmount() {
       userStore.removeChangeListener(::this._onChange)  
   }
 
