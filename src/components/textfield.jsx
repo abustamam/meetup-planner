@@ -7,7 +7,12 @@ class TextField extends React.Component {
     constructor(props) {
         super(props)
         this.displayName = 'TextField'
-        this.state = {}
+        const { error, label, required } = this.props
+        this.state = {
+            errorVisible: false,
+            error: error || (required ? `${_.capitalize(label)} is required.` : ''),
+            val: ''
+        }
     }
     componentDidMount() {
     	const { autofocus } = this.props
@@ -19,43 +24,37 @@ class TextField extends React.Component {
 	checkValue() {
         const { type = "text", label, required } = this.props
         const { val } = this.state
+        let errorVisible = true
         if (type === 'email') {
+            // test if val is a valid email
+            // from http://emailregex.com/
             const eml = new RegExp(/^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i)
-            const valid = eml.test(val)
-            if (!valid) {
-                this.setState({
-                    error: `Email address is invalid`
-                })
-                return
-            }
+            errorVisible = !eml.test(val)
         } else if (type === 'password') {
-        	const pass = new RegExp(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/)
-            const valid = pass.test(val)
-            if (!valid) {
-                this.setState({
-                    error: `Password must have minimum of 8 characters and at least 1 letter and 1 number`
-                })
-                return
-            }
+            // test if val has at least 8 chars
+        	const pass = new RegExp(/^.{8,}$/)
+            errorVisible = !pass.test(val)
+        } else {
+            // return true only if field is required and val is empty
+            errorVisible = required && !val
         }
 
-        const error = val ? '' : required ? `${_.capitalize(label)} is required` : ''
-
-        this.setState({error})
+        this.setState({errorVisible})
     }
 
 	updateValue(e) {
         const { handleChange, label } = this.props
 		const val = e.target.value
-        this.setState({val, error: ''})
+        this.setState({val, errorVisible: false})
         handleChange(label, val)
     }
 
     render() {
     	const { autofocus, required, label, placeholder, type, errorText, onBlur, onChange } = this.props
+        const { errorVisible, error } = this.state
         return <div className="text-field">
             <label htmlFor={label}>{_.startCase(label)}{required ? <sup>*</sup> : null}</label>
-            { (this.state.error || (this.props.tryUpdate && !this.state.val)) ? <span> {this.state.error}</span> : null}
+            { (errorVisible) ? <span> {error}</span> : null}
         	<input
                 id={label}
         		ref={c => this.input = c}

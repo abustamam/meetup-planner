@@ -59,6 +59,7 @@ class Main extends React.Component {
                     required={true}
                     label="email"
                     placeholder="name@example.com"
+                    error="Email address is invalid"
                     type="email"
                     handleChange={::this.handleChange}
                     tryUpdate={this.state.tryUpdate}
@@ -66,7 +67,8 @@ class Main extends React.Component {
                 <TextField 
                     required={true}
                     label="password" 
-                    placeholder="Minimum 8 characters, at least 1 letter and 1 number, no special characters"
+                    placeholder="Minimum 8 characters"
+                    error="Password must have minimum of 8 characters"
                     type="password"
                     handleChange={::this.handleChange}
                     tryUpdate={this.state.tryUpdate}
