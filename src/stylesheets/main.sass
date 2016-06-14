@@ -27,14 +27,19 @@ header
 .tabs
 	display: flex
 	justify-content: space-around
-	background: $secondary
 	.tab
+		background: rgba(1, 1, 1, 0.25)
+		cursor: pointer
 		flex-grow: 1
 		display: flex
 		justify-content: center
 		padding: 10px
 		border: 1px solid black
 		border-bottom: none
+		box-shadow: 0px -2px 5px 0px #777 inset
+		&.selected
+			background: white
+			box-shadow: none
 
 .main
 	display: flex
