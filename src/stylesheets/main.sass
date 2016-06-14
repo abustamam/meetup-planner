@@ -1,5 +1,5 @@
 $primary: #F44336
-// $secondary: 
+$secondary: #eee
 
 html
 	box-sizing: border-box
@@ -19,15 +19,20 @@ header
 	justify-content: center
 	align-items: center
 	background: $primary
-	color: #eee
+	color: $secondary
 	font-weight: bold
 	font-size: 20px
 	padding: 10px
 
+.progress
+	display: flex
+	justify-content: space-around
+	padding: 10px
+	background: $secondary
+
 .main
 	display: flex
 	flex-direction: column
-	border: 1px solid black
 	padding: 25px
 
 form

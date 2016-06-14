@@ -1,148 +1,41 @@
 import React from 'react'
-import TextField from './textfield.jsx'
-import { create } from './../actions/useractions.js'
-import update from 'react-addons-update'
-import _ from 'lodash'
+import NewUser from './newuser'
+// import Circle from './circle' // not using for now
 
-/** The main part of the app
+/** Main portion of the app
   * @extends React.Component
   */
+
 class Main extends React.Component {
 
     static defaultProps = {
-        allUsers: {}
+	    allUsers: {}
     }
 
     static propTypes = {
         allUsers: React.PropTypes.object
     }
 
-    state = {
-        newUser: {},
-        tryUpdate: false,
-        errorVisible: false
-    }
 
+	state = {
+		selectedTab: 'newUser'
+	}
 
     constructor(props) {
         super(props);
         this.displayName = 'Main'
     }
 
-    /**
-     * handles changing of the user that is currently being created
-     * @param {String} name - attribute name, e.g. "email"
-     * @param {String} value - value of prop, e.g. "rasheed.bustamam@gmail.com"
-     * @return {void}
-     */
-
-    handleChange(name, value) {
-        const newObj = update(this.state.newUser, {
-            $merge: {[name]: value}
-        })
-
-        this.setState({
-            newUser: newObj,
-            errorVisible: false,
-            tryUpdate: false
-        })
-    }
-
-    /**
-     * attempts to create a new user, throws an error if any required 
-     * attributes are not filled in correctly
-     * @param {syntheticEvent} e - the event
-     * @return {void}
-     */
-
-    tryCreate(e) {
-        e.preventDefault()
-        this.setState({tryUpdate: true})
-        const { name, email, password } = this.state.newUser
-        if (name && email && password) {
-            this.handleCreate()
-        } else {
-            this.setState({errorVisible: true})
-        }
-    }
-
-    /**
-     * handles creation of new user
-     * @return {void}
-     */
-
-    handleCreate() {
-        const user = {
-            ...this.state.newUser
-        }
-        create(user)
-        this.setState({newUser: {}, errorVisible: false})
-    }
-
-    /**
-     * render the component
-     * @return {void}
-     */
-
     render() {
-        const { errorVisible, newUser } = this.state
-        return <div className="main">
-            <form className="form" onSubmit={::this.tryCreate}>
-                <TextField 
-                    autofocus={true}
-                    required={true}
-                    label="name"
-                    placeholder="John Doe"
-                    handleChange={::this.handleChange}
-                    errorVisible={errorVisible}
-                    value={newUser['name']}
-                />
-                <TextField 
-                    required={true}
-                    label="email"
-                    placeholder="name@example.com"
-                    errorText="Email address is invalid"
-                    type="email"
-                    handleChange={::this.handleChange}
-                    errorVisible={errorVisible}
-                    value={newUser['email']}
-                />
-                <TextField 
-                    required={true}
-                    label="password" 
-                    placeholder="Minimum 8 characters"
-                    errorText="Password must have minimum of 8 characters"
-                    type="password"
-                    handleChange={::this.handleChange}
-                    errorVisible={errorVisible}
-                    value={newUser['password']}
-                />
-                <TextField 
-                    label="employer"
-                    placeholder="Google"
-                    handleChange={::this.handleChange}
-                    errorVisible={errorVisible}
-                    value={newUser['employer']}
-                />
-                <TextField 
-                    label="job title"
-                    placeholder="Software Engineer"
-                    handleChange={::this.handleChange}
-                    errorVisible={errorVisible}
-                    value={newUser['job title']}
-                />
-                <TextField 
-                    label="birthday"
-                    placeholder="mm/dd/yyyy"
-                    type="date"
-                    handleChange={::this.handleChange}
-                    errorVisible={errorVisible}
-                    value={newUser['birthday']}
-                />
-                <span><sup>*</sup>Required</span>
-                <button type="submit">Submit</button>
-            </form>
-        </div>
+    	const { allUsers } = this.props
+        return <div>
+        	<div className="progress">
+        		<div>New User</div>
+        		<div>New Event</div>
+        		<div>View all events</div>
+        	</div>
+        	<NewUser allUsers={allUsers}/>
+    	</div>
     }
 }
 
