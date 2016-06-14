@@ -10,7 +10,7 @@ export function create(user) {
 
 export function update(id, user) {
 	AppDispatcher.dispatch({
-		type: UserConstants.USER_UPATE,
+		type: UserConstants.USER_UPDATE,
 		id,
 		user
 	})
