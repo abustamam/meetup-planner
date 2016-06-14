@@ -1,80 +1,80 @@
 import React from 'react'
 import TextField from './textfield.jsx'
-import { create } from './../actions/useractions.js'
+import { create } from './../actions/eventactions.js'
 import update from 'react-addons-update'
 import _ from 'lodash'
 
 /** New user creation screen
   * @extends React.Component
   */
-class NewUser extends React.Component {
+class NewEvent extends React.Component {
 
     static defaultProps = {
-        allUsers: {}
+        allEvents: {}
     }
 
     static propTypes = {
-        allUsers: React.PropTypes.object
+        allEvents: React.PropTypes.object
     }
 
     state = {
-        newUser: {},
+        newEvent: {},
         errorVisible: false
     }
 
 
     constructor(props) {
         super(props);
-        this.displayName = 'NewUser'
+        this.displayName = 'NewEvent'
     }
 
     /**
-     * handles changing of the user that is currently being created
-     * @param {String} name - attribute name, e.g. "email"
-     * @param {String} value - value of prop, e.g. "rasheed.bustamam@gmail.com"
+     * handles changing of the event that is currently being created
+     * @param {String} name - attribute name, e.g. "event name"
+     * @param {String} value - value of prop, e.g. "bob's birthday"
      * @return {void}
      */
 
     handleChange(name, value) {
-        const newObj = update(this.state.newUser, {
+        const newObj = update(this.state.newEvent, {
             $merge: {[name]: value}
         })
 
         this.setState({
-            newUser: newObj,
+            newEvent: newObj,
             errorVisible: false
         })
     }
 
     /**
-     * attempts to create a new user, throws an error if any required 
+     * attempts to create a new event, throws an error if any required 
      * attributes are not filled in correctly
-     * @param {syntheticEvent} e - the event
+     * @param {syntheticEvent} e - the window event
      * @return {void}
      */
 
     tryCreate(e) {
         e.preventDefault()
-        this.setState({tryUpdate: true})
-        const { name, email, password } = this.state.newUser
+        const { name, email, password } = this.state.newEvent
         if (name && email && password) {
             this.handleCreate()
         } else {
-            this.setState({errorVisible: true})
+            // this.setState({errorVisible: true})
+            this.handleCreate()
         }
     }
 
     /**
-     * handles creation of new user
+     * handles creation of new event
      * @return {void}
      */
 
     handleCreate() {
-        const user = {
-            ...this.state.newUser
+        const event = {
+            ...this.state.newEvent
         }
-        create(user)
-        this.setState({newUser: {}, errorVisible: false})
+        create(event)
+        this.setState({newEvent: {}, errorVisible: false})
     }
 
     /**
@@ -83,52 +83,60 @@ class NewUser extends React.Component {
      */
 
     render() {
-        const { errorVisible, newUser } = this.state
+        const { errorVisible, newEvent } = this.state
         return <div className="main">
             <form className="form" onSubmit={::this.tryCreate}>
                 <span><sup>*</sup>Required</span>
                 <TextField 
                     autofocus={true}
                     required={true}
-                    label="name"
-                    placeholder="e.g. John Doe"
+                    label="event name"
+                    placeholder="e.g. John's Birthday"
                     handleChange={::this.handleChange}
                     errorVisible={errorVisible}
-                    value={newUser['name']}
+                    value={newEvent['event name']}
                 />
                 <TextField 
                     required={true}
-                    label="email"
-                    placeholder="e.g. name@example.com"
-                    errorText="Email address is invalid"
-                    type="email"
+                    label="event type"
+                    placeholder="e.g. birthday"
                     handleChange={::this.handleChange}
                     errorVisible={errorVisible}
-                    value={newUser['email']}
+                    value={newEvent['event type']}
                 />
                 <TextField 
                     required={true}
-                    label="password" 
-                    placeholder="Minimum 8 characters"
-                    errorText="Password must have minimum of 8 characters"
-                    type="password"
+                    label="start time" 
+                    placeholder="hh:mm"
+                    type="datetime"
                     handleChange={::this.handleChange}
                     errorVisible={errorVisible}
-                    value={newUser['password']}
+                    value={newEvent['start time']}
                 />
                 <TextField 
-                    label="employer"
+                    required={true}
+                    label="end time" 
+                    placeholder="hh:mm"
+                    type="datetime"
+                    handleChange={::this.handleChange}
+                    errorVisible={errorVisible}
+                    value={newEvent['end time']}
+                />
+                <TextField 
+                    required={true}
+                    label="guest list"
                     placeholder="e.g. Google"
                     handleChange={::this.handleChange}
                     errorVisible={errorVisible}
-                    value={newUser['employer']}
+                    value={newEvent['guest list']}
                 />
                 <TextField 
-                    label="job title"
-                    placeholder="e.g. Software Engineer"
+                    required={true}
+                    label="location"
+                    placeholder="e.g. My house"
                     handleChange={::this.handleChange}
                     errorVisible={errorVisible}
-                    value={newUser['job title']}
+                    value={newEvent['location']}
                 />
                 <TextField 
                     label="birthday"
@@ -136,7 +144,7 @@ class NewUser extends React.Component {
                     type="date"
                     handleChange={::this.handleChange}
                     errorVisible={errorVisible}
-                    value={newUser['birthday']}
+                    value={newEvent['birthday']}
                 />
                 <button type="submit">Submit</button>
             </form>
@@ -144,4 +152,4 @@ class NewUser extends React.Component {
     }
 }
 
-export default NewUser
+export default NewEvent

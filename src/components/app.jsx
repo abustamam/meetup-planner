@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import Header from './header'
 import Main from './main'
 import userStore from './../stores/userstore.js'
+import eventStore from './../stores/eventstore.js'
+import _ from 'lodash'
 require('./../lib/tota11y.min.js')
 /**
  * Gets the current userStore and returns all users
@@ -13,13 +15,19 @@ function getUserState() {
   }
 }
 
+function getEventState() {
+  return {
+    allEvents: eventStore.getAll()
+  }
+}
+
 /** The entire app
   * @extends React.Component
   */
 
 export default class App extends Component {
 
-  state = getUserState()
+  state = _.assign({}, getUserState(), getEventState())
 
   constructor(props) {
     super(props)
@@ -32,6 +40,7 @@ export default class App extends Component {
 
   componentDidMount() {
       userStore.addChangeListener(::this._onChange)
+      eventStore.addChangeListener(::this._onChange)
   }
 
   /*
@@ -40,7 +49,8 @@ export default class App extends Component {
    */  
 
   componentWillUnmount() {
-      userStore.removeChangeListener(::this._onChange)  
+      userStore.removeChangeListener(::this._onChange)
+      eventStore.removeChangeListener(::this._onChange)    
   }
 
   /**
@@ -54,17 +64,18 @@ export default class App extends Component {
     		<Header />
     		<Main 
           allUsers={this.state.allUsers}
+          allEvents={this.state.allEvents}
         />
     	</div>
     )
   }
 
   /**
-   * sets state to the current contents of userStore.allUsers
+   * sets state to the current contents of userStore._users and eventStore._events
    * @return {void}
    */
 
   _onChange() {
-    this.setState(getUserState())
+    this.setState(_.assign({}, getUserState(), getEventState()))
   }
 }

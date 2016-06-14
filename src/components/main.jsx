@@ -1,5 +1,6 @@
 import React from 'react'
 import NewUser from './newuser'
+import NewEvent from './newevent'
 import classnames from 'classnames'
 import _ from 'lodash'
 // import Circle from './circle' // not using for now
@@ -29,14 +30,14 @@ class Main extends React.Component {
     }
 
     render() {
-    	const { allUsers } = this.props
+    	const { allUsers, allEvents } = this.props
     	const tabs = ['new user', 'new event', 'view all events']
     	const renderTab = () => {
 	    	const { selectedTab } = this.state
 	    	if (selectedTab === 'new user') {
 	    		return <NewUser allUsers={allUsers}/>
 	    	} else if (selectedTab === 'new event') {
-	    		return
+	    		return <NewEvent allEvents={allEvents}/>
 	    	} else if (selectedTab === 'view all events') {
 	    		return
 	    	} else {
