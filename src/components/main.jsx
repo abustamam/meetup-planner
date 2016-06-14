@@ -29,10 +29,10 @@ class Main extends React.Component {
     render() {
     	const { allUsers } = this.props
         return <div>
-        	<div className="progress">
-        		<div>New User</div>
-        		<div>New Event</div>
-        		<div>View all events</div>
+        	<div className="tabs">
+        		<div className="tab">New User</div>
+        		<div className="tab">New Event</div>
+        		<div className="tab">View all events</div>
         	</div>
         	<NewUser allUsers={allUsers}/>
     	</div>
