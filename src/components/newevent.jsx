@@ -108,7 +108,7 @@ class NewEvent extends React.Component {
                     required={true}
                     label="start time" 
                     placeholder="hh:mm"
-                    type="datetime"
+                    type="datetime-local"
                     handleChange={::this.handleChange}
                     errorVisible={errorVisible}
                     value={newEvent['start time']}
@@ -117,7 +117,7 @@ class NewEvent extends React.Component {
                     required={true}
                     label="end time" 
                     placeholder="hh:mm"
-                    type="datetime"
+                    type="datetime-local"
                     handleChange={::this.handleChange}
                     errorVisible={errorVisible}
                     value={newEvent['end time']}
