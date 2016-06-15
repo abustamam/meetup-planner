@@ -51,12 +51,10 @@ class TextField extends React.Component {
             // from http://emailregex.com/
             const eml = new RegExp(/^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i)
             errorVisible = !eml.test(value)
-            console.log(errorVisible, value)
         } else if (type === 'password') {
             // test if val has at least 8 chars
         	const pass = new RegExp(/^.{8,}$/)
             errorVisible = !pass.test(value)
-            console.log(errorVisible, value)
         } else {
             // return true only if field is required and val is empty
             errorVisible = required && !value

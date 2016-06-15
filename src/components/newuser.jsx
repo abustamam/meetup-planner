@@ -46,13 +46,13 @@ class NewUser extends React.Component {
 
     tryCreate(e) {
         e.preventDefault()
-        this.setState({tryUpdate: true})
-        const { name, email, password } = this.state.newUser
-        if (name && email && password) {
-            this.handleCreate()
-        } else {
-            this.setState({errorVisible: true})
-        }
+        this.handleCreate()
+        // const { name, email, password } = this.state.newUser
+        // if (name && email && password) {
+        //     this.handleCreate()
+        // } else {
+        //     this.setState({errorVisible: true})
+        // }
     }
 
     /**
@@ -66,6 +66,7 @@ class NewUser extends React.Component {
         }
         create(user)
         this.setState({newUser: {}, errorVisible: false})
+        this.props.setActiveTab('new event')
     }
 
     /**

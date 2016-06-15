@@ -32,15 +32,19 @@ class Main extends React.Component {
         this.displayName = 'Main'
     }
 
+    setActiveTab(tab) {
+        this.setState({selectedTab: tab})
+    }
+
     render() {
     	const { allUsers, allEvents } = this.props
     	const tabs = ['new user', 'new event', 'view all events']
     	const renderTab = () => {
 	    	const { selectedTab } = this.state
 	    	if (selectedTab === 'new user') {
-	    		return <NewUser/>
+	    		return <NewUser setActiveTab={::this.setActiveTab}/>
 	    	} else if (selectedTab === 'new event') {
-	    		return <NewEvent/>
+	    		return <NewEvent setActiveTab={::this.setActiveTab}/>
 	    	} else if (selectedTab === 'view all events') {
 	    		return <ViewEvents allEvents={allEvents} allUsers={allUsers} />
 	    	} else {

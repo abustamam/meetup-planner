@@ -47,13 +47,14 @@ class NewEvent extends React.Component {
 
     tryCreate(e) {
         e.preventDefault()
-        const { name, email, password } = this.state.newEvent
-        if (name && email && password) {
-            this.handleCreate()
-        } else {
-            this.setState({errorVisible: true})
-            // this.handleCreate()
-        }
+        this.handleCreate()
+        // const { name, email, password } = this.state.newEvent
+        // if (name && email && password) {
+        //     this.handleCreate()
+        // } else {
+        //     this.setState({errorVisible: true})
+        //     // this.handleCreate()
+        // }
     }
 
     /**
@@ -67,6 +68,7 @@ class NewEvent extends React.Component {
         }
         create(event)
         this.setState({newEvent: {}, errorVisible: false})
+        this.props.setActiveTab('view all events')
     }
 
     /**
