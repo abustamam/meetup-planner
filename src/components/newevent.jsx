@@ -8,15 +8,6 @@ import _ from 'lodash'
   * @extends React.Component
   */
 class NewEvent extends React.Component {
-
-    static defaultProps = {
-        allEvents: {}
-    }
-
-    static propTypes = {
-        allEvents: React.PropTypes.object
-    }
-
     state = {
         newEvent: {},
         errorVisible: false

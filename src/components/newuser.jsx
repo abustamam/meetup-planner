@@ -8,15 +8,6 @@ import _ from 'lodash'
   * @extends React.Component
   */
 class NewUser extends React.Component {
-
-    static defaultProps = {
-        allUsers: {}
-    }
-
-    static propTypes = {
-        allUsers: React.PropTypes.object
-    }
-
     state = {
         newUser: {},
         errorVisible: false
