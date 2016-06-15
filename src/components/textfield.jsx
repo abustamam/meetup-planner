@@ -26,7 +26,8 @@ class TextField extends React.Component {
 
     state = {
         errorVisible: this.props.errorVisible || false,
-        errorText: this.props.errorText || (this.props.required ? `${_.capitalize(this.props.label)} is required.` : '')
+        errorText: this.props.errorText || (this.props.required ? `${_.capitalize(this.props.label)} is required.` : ''),
+        focus: false
     }
 
     constructor(props) {
@@ -60,7 +61,7 @@ class TextField extends React.Component {
             errorVisible = required && !value
         }
 
-        this.setState({errorVisible})
+        this.setState({errorVisible, focus: false})
     }
 
     /**
@@ -84,12 +85,17 @@ class TextField extends React.Component {
     render() {
     	const { required, label, placeholder, type, value, autofocus } = this.props
         const { errorVisible, errorText } = this.state
+        const labelClass = classnames({
+            'input-label': true,
+            'input-label-focus': this.state.focus
+        })
         return <div className="text-field">
-            <label htmlFor={label}>{_.startCase(label)}{required ? null : <span> (optional)</span>}</label>
+            <label className={labelClass} htmlFor={label}>{_.startCase(label)}{required ? null : <span> (optional)</span>}</label>
             <div className="errorText">{errorVisible ? errorText : ''}</div>
             <input
                 id={label}
                 autoFocus={autofocus}
+                onFocus={()=>this.setState({focus: true})}
                 required={required}
                 autoComplete={label}
             	placeholder={placeholder}
