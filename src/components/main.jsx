@@ -1,10 +1,12 @@
 import React from 'react'
+import classnames from 'classnames'
+import _ from 'lodash'
 import NewUser from './newuser'
 import NewEvent from './newevent'
 import ViewEvents from './viewevents'
-import classnames from 'classnames'
-import _ from 'lodash'
-// import Circle from './circle' // not using for now
+import Dehaze from './icons/dehaze'
+
+// import Circle from './icons/circle' // not using for now
 
 /** Main portion of the app
   * @extends React.Component
@@ -47,7 +49,7 @@ class Main extends React.Component {
 	    }
 
         return <div>
-        	<div className="tabs">
+            <nav className="tabs">
         		{_.map(tabs, tab => {
         			const cname = classnames('tab', {selected: this.state.selectedTab === tab})
         			return <div 
@@ -58,7 +60,7 @@ class Main extends React.Component {
         				{_.startCase(tab)}
         			</div>
         		})}
-        	</div>
+            </nav>
         	{renderTab()}
     	</div>
     }

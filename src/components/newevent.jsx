@@ -1,6 +1,7 @@
 import React from 'react'
-import TextField from './textfield.jsx'
-import { create } from './../actions/eventactions.js'
+import TextField from './textfield'
+import GuestList from './guestlist'
+import { create } from './../actions/eventactions'
 import update from 'react-addons-update'
 import _ from 'lodash'
 
@@ -50,8 +51,8 @@ class NewEvent extends React.Component {
         if (name && email && password) {
             this.handleCreate()
         } else {
-            // this.setState({errorVisible: true})
-            this.handleCreate()
+            this.setState({errorVisible: true})
+            // this.handleCreate()
         }
     }
 
@@ -77,7 +78,7 @@ class NewEvent extends React.Component {
         const { errorVisible, newEvent } = this.state
         return <div className="main">
             <form className="form" onSubmit={::this.tryCreate}>
-                <span><sup>*</sup>Required</span>
+                <span>All fields required unless marked optional</span>
                 <TextField 
                     autofocus={true}
                     required={true}
@@ -86,6 +87,14 @@ class NewEvent extends React.Component {
                     handleChange={::this.handleChange}
                     errorVisible={errorVisible}
                     value={newEvent['event name']}
+                />
+                <TextField 
+                    required={true}
+                    label="event host"
+                    placeholder="e.g. birthday"
+                    handleChange={::this.handleChange}
+                    errorVisible={errorVisible}
+                    value={newEvent['event host']}
                 />
                 <TextField 
                     required={true}
@@ -113,10 +122,10 @@ class NewEvent extends React.Component {
                     errorVisible={errorVisible}
                     value={newEvent['end time']}
                 />
-                <TextField 
+                <GuestList 
                     required={true}
                     label="guest list"
-                    placeholder="e.g. Google"
+                    placeholder="e.g. John Doe"
                     handleChange={::this.handleChange}
                     errorVisible={errorVisible}
                     value={newEvent['guest list']}
@@ -137,7 +146,7 @@ class NewEvent extends React.Component {
                     errorVisible={errorVisible}
                     value={newEvent['birthday']}
                 />
-                <button type="submit">Submit</button>
+                <button type="submit" className="submit">Create New Event</button>
             </form>
         </div>
     }

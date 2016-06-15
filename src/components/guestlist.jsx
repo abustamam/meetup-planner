@@ -1,11 +1,11 @@
 import React from 'react'
-import classnames from 'classnames'
-import _ from 'lodash'
+import Person from './icons/person'
+import PersonOutline from './icons/personoutline'
 
-/** A single text field
+/** Guest list input
   * @extends React.Component
   */
-class TextField extends React.Component {
+class GuestList extends React.Component {
 
     static defaultProps = {
         autofocus: false,
@@ -31,7 +31,7 @@ class TextField extends React.Component {
 
     constructor(props) {
         super(props)
-        this.displayName = 'TextField'
+        this.displayName = 'GuestList'
     }
 
     componentWillReceiveProps(nextProps) {
@@ -51,12 +51,10 @@ class TextField extends React.Component {
             // from http://emailregex.com/
             const eml = new RegExp(/^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i)
             errorVisible = !eml.test(value)
-            console.log(errorVisible, value)
         } else if (type === 'password') {
             // test if val has at least 8 chars
         	const pass = new RegExp(/^.{8,}$/)
             errorVisible = !pass.test(value)
-            console.log(errorVisible, value)
         } else {
             // return true only if field is required and val is empty
             errorVisible = required && !value
@@ -87,21 +85,21 @@ class TextField extends React.Component {
     	const { required, label, placeholder, type, value, autofocus } = this.props
         const { errorVisible, errorText } = this.state
         return <div className="text-field">
-            <label htmlFor={label}>{_.startCase(label)}{required ? null : <span> (optional)</span>}</label>
+            <label htmlFor={label}>{_.startCase(label)}{required ? <sup>*</sup> : null}</label>
             <div className="errorText">{errorVisible ? errorText : ''}</div>
-            <input
+        	<input
                 id={label}
                 autoFocus={autofocus}
                 required={required}
                 autoComplete={label}
-            	placeholder={placeholder}
-            	type={type} 
+        		placeholder={placeholder}
+        		type={type} 
                 value={value}
-            	onBlur={::this.checkValue}
-            	onChange={::this.updateValue}
-            />
+        		onBlur={::this.checkValue}
+        		onChange={::this.updateValue}
+    		/>
         </div>
     }
 }
 
-export default TextField
+export default GuestList

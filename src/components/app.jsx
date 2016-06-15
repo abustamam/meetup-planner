@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import Header from './header'
 import Main from './main'
-import userStore from './../stores/userstore.js'
-import eventStore from './../stores/eventstore.js'
+import userStore from './../stores/userstore'
+import eventStore from './../stores/eventstore'
 import _ from 'lodash'
 require('./../lib/tota11y.min.js')
 /**

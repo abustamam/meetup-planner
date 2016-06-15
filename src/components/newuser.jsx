@@ -1,6 +1,6 @@
 import React from 'react'
 import TextField from './textfield.jsx'
-import { create } from './../actions/useractions.js'
+import { create } from './../actions/useractions'
 import update from 'react-addons-update'
 import _ from 'lodash'
 
@@ -77,7 +77,7 @@ class NewUser extends React.Component {
         const { errorVisible, newUser } = this.state
         return <div className="main">
             <form className="form" onSubmit={::this.tryCreate}>
-                <span><sup>*</sup>Required</span>
+                <span>All fields required unless marked optional</span>
                 <TextField 
                     autofocus={true}
                     required={true}
@@ -129,7 +129,7 @@ class NewUser extends React.Component {
                     errorVisible={errorVisible}
                     value={newUser['birthday']}
                 />
-                <button type="submit">Submit</button>
+                <button type="submit" className="submit">Create New User</button>
             </form>
         </div>
     }
