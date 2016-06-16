@@ -1,8 +1,14 @@
 import React from 'react'
-import TextField from './textfield.jsx'
-import { create } from './../actions/useractions'
 import update from 'react-addons-update'
 import _ from 'lodash'
+import TextField from './textfield.jsx'
+import { create } from './../actions/useractions'
+import Person from './icons/person'
+import Email from './icons/email'
+import Lock from './icons/lock'
+import Work from './icons/work'
+import Cake from './icons/cake'
+
 
 /** New user creation screen
   * @extends React.Component
@@ -78,7 +84,7 @@ class NewUser extends React.Component {
         const { errorVisible, newUser } = this.state
         return <div className="main">
             <form className="form" onSubmit={::this.tryCreate}>
-                <span>All fields required unless marked optional</span>
+                <span className="form-label">All fields required unless marked optional</span>
                 <TextField 
                     autofocus={true}
                     required={true}
@@ -87,7 +93,7 @@ class NewUser extends React.Component {
                     handleChange={::this.handleChange}
                     errorVisible={errorVisible}
                     value={newUser['name']}
-                />
+                ><Person/></TextField>
                 <TextField 
                     required={true}
                     label="email"
@@ -97,7 +103,7 @@ class NewUser extends React.Component {
                     handleChange={::this.handleChange}
                     errorVisible={errorVisible}
                     value={newUser['email']}
-                />
+                ><Email/></TextField>
                 <TextField 
                     required={true}
                     label="password" 
@@ -107,21 +113,21 @@ class NewUser extends React.Component {
                     handleChange={::this.handleChange}
                     errorVisible={errorVisible}
                     value={newUser['password']}
-                />
+                ><Lock/></TextField>
                 <TextField 
                     label="employer"
                     placeholder="e.g. Google"
                     handleChange={::this.handleChange}
                     errorVisible={errorVisible}
                     value={newUser['employer']}
-                />
+                ><Work/></TextField>
                 <TextField 
                     label="job title"
                     placeholder="e.g. Software Engineer"
                     handleChange={::this.handleChange}
                     errorVisible={errorVisible}
                     value={newUser['job title']}
-                />
+                ><Work/></TextField>
                 <TextField 
                     label="birthday"
                     placeholder="mm/dd/yyyy"
@@ -129,7 +135,7 @@ class NewUser extends React.Component {
                     handleChange={::this.handleChange}
                     errorVisible={errorVisible}
                     value={newUser['birthday']}
-                />
+                ><Cake/></TextField>
                 <button type="submit" className="submit">Create New User</button>
             </form>
         </div>

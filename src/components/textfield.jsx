@@ -83,27 +83,35 @@ class TextField extends React.Component {
      */
 
     render() {
-    	const { required, label, placeholder, type, value, autofocus } = this.props
+    	const { required, label, placeholder, type, value, autofocus, children } = this.props
         const { errorVisible, errorText } = this.state
         const labelClass = classnames({
             'input-label': true,
             'input-label-focus': this.state.focus
         })
-        return <div className="text-field">
+        const textClass = classnames({
+            'text-field': true,
+            'text-field-focus': this.state.focus
+        })
+        return <div className={textClass}>
             <label className={labelClass} htmlFor={label}>{_.startCase(label)}{required ? null : <span> (optional)</span>}</label>
             <div className="errorText">{errorVisible ? errorText : ''}</div>
-            <input
-                id={label}
-                autoFocus={autofocus}
-                onFocus={()=>this.setState({focus: true})}
-                required={required}
-                autoComplete={label}
-            	placeholder={placeholder}
-            	type={type} 
-                value={value}
-            	onBlur={::this.checkValue}
-            	onChange={::this.updateValue}
-            />
+            <div className="input-container">
+                {children}
+                <input
+                    className="input-box"
+                    id={label}
+                    autoFocus={autofocus}
+                    onFocus={()=>this.setState({focus: true})}
+                    required={required}
+                    autoComplete={label}
+                	placeholder={placeholder}
+                	type={type} 
+                    value={value}
+                	onBlur={::this.checkValue}
+                	onChange={::this.updateValue}
+                />
+            </div>
         </div>
     }
 }

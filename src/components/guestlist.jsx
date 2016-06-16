@@ -1,6 +1,7 @@
 import React from 'react'
 import Person from './icons/person'
 import PersonOutline from './icons/personoutline'
+import classnames from 'classnames'
 
 /** Guest list input
   * @extends React.Component
@@ -84,8 +85,12 @@ class GuestList extends React.Component {
     render() {
     	const { required, label, placeholder, type, value, autofocus } = this.props
         const { errorVisible, errorText } = this.state
+        const labelClass = classnames({
+            'input-label': true,
+            'input-label-focus': this.state.focus
+        })
         return <div className="text-field">
-            <label htmlFor={label}>{_.startCase(label)}{required ? <sup>*</sup> : null}</label>
+            <label className={labelClass} htmlFor={label}>{_.startCase(label)}{required ? null : <span> (optional)</span>}</label>
             <div className="errorText">{errorVisible ? errorText : ''}</div>
         	<input
                 id={label}

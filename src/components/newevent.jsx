@@ -80,7 +80,7 @@ class NewEvent extends React.Component {
         const { errorVisible, newEvent } = this.state
         return <div className="main">
             <form className="form" onSubmit={::this.tryCreate}>
-                <span>All fields required unless marked optional</span>
+                <span className="form-label">All fields required unless marked optional</span>
                 <TextField 
                     autofocus={true}
                     required={true}
