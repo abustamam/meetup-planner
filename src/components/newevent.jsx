@@ -2,6 +2,7 @@ import React from 'react'
 import update from 'react-addons-update'
 import _ from 'lodash'
 import TextField from './textfield'
+import TextArea from './textarea'
 import GuestList from './guestlist'
 import { create } from './../actions/eventactions'
 import Label from './icons/label'
@@ -13,6 +14,7 @@ import Office from './icons/office'
 import BeginTime from './icons/begintime'
 import EndTime from './icons/endtime'
 import Pin from './icons/pin'
+import Email from './icons/email'
 
 /** New user creation screen
   * @extends React.Component
@@ -146,14 +148,6 @@ class NewEvent extends React.Component {
                     errorVisible={errorVisible}
                     value={newEvent['end time']}
                 ><EndTime/></TextField>
-                <GuestList 
-                    required={true}
-                    label="guest list"
-                    placeholder="e.g. John Doe"
-                    handleChange={::this.handleChange}
-                    errorVisible={errorVisible}
-                    value={newEvent['guest list']}
-                />
                 <TextField 
                     required={true}
                     label="location"
@@ -162,14 +156,21 @@ class NewEvent extends React.Component {
                     errorVisible={errorVisible}
                     value={newEvent['location']}
                 ><Pin/></TextField>
-                <TextField 
+                <GuestList 
+                    required={true}
+                    label="guest list"
+                    placeholder="e.g. John Doe"
+                    handleChange={::this.handleChange}
+                    errorVisible={errorVisible}
+                    value={newEvent['guest list']}
+                />
+                <TextArea 
                     label="message to guests"
-                    placeholder="mm/dd/yyyy"
-                    type="date"
+                    placeholder="e.g. Don't forget your swimsuits!"
                     handleChange={::this.handleChange}
                     errorVisible={errorVisible}
                     value={newEvent['message to guests']}
-                />
+                ><Email/></TextArea>
                 <button type="submit" className="submit">Create New Event</button>
             </form>
         </div>
