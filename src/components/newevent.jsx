@@ -6,6 +6,13 @@ import GuestList from './guestlist'
 import { create } from './../actions/eventactions'
 import Label from './icons/label'
 import Person from './icons/person'
+import Circle from './icons/circle'
+import Cake from './icons/cake'
+import Party from './icons/party'
+import Office from './icons/office'
+import BeginTime from './icons/begintime'
+import EndTime from './icons/endtime'
+import Pin from './icons/pin'
 
 /** New user creation screen
   * @extends React.Component
@@ -79,6 +86,20 @@ class NewEvent extends React.Component {
 
     render() {
         const { errorVisible, newEvent } = this.state
+        const eventType = newEvent['event type']
+        let typeIcon = <Circle/>
+
+        if (eventType === 'birthday') {
+            typeIcon = <Cake/>
+        }
+        if (eventType === 'party') {
+            typeIcon = <Party/>
+        }
+        if (eventType === 'work') {
+            typeIcon = <Office/>
+        }
+
+
         return <div className="main">
             <form className="form" onSubmit={::this.tryCreate}>
                 <span className="form-label">All fields required unless marked optional</span>
@@ -106,7 +127,7 @@ class NewEvent extends React.Component {
                     handleChange={::this.handleChange}
                     errorVisible={errorVisible}
                     value={newEvent['event type']}
-                />
+                >{typeIcon}</TextField>
                 <TextField 
                     required={true}
                     label="start time" 
@@ -115,7 +136,7 @@ class NewEvent extends React.Component {
                     handleChange={::this.handleChange}
                     errorVisible={errorVisible}
                     value={newEvent['start time']}
-                />
+                ><BeginTime/></TextField>
                 <TextField 
                     required={true}
                     label="end time" 
@@ -124,7 +145,7 @@ class NewEvent extends React.Component {
                     handleChange={::this.handleChange}
                     errorVisible={errorVisible}
                     value={newEvent['end time']}
-                />
+                ><EndTime/></TextField>
                 <GuestList 
                     required={true}
                     label="guest list"
@@ -140,14 +161,14 @@ class NewEvent extends React.Component {
                     handleChange={::this.handleChange}
                     errorVisible={errorVisible}
                     value={newEvent['location']}
-                />
+                ><Pin/></TextField>
                 <TextField 
-                    label="birthday"
+                    label="message to guests"
                     placeholder="mm/dd/yyyy"
                     type="date"
                     handleChange={::this.handleChange}
                     errorVisible={errorVisible}
-                    value={newEvent['birthday']}
+                    value={newEvent['message to guests']}
                 />
                 <button type="submit" className="submit">Create New Event</button>
             </form>

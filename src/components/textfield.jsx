@@ -93,10 +93,14 @@ class TextField extends React.Component {
             'text-field': true,
             'text-field-focus': this.state.focus
         })
+        const inputClass = classnames({
+            'input-container': true,
+            'input-container-focus': this.state.focus
+        })
         return <div className={textClass}>
             <label className={labelClass} htmlFor={label}>{_.startCase(label)}{required ? null : <span> (optional)</span>}</label>
             <div className="errorText">{errorVisible ? errorText : ''}</div>
-            <div className="input-container">
+            <div className={inputClass}>
                 {children}
                 <input
                     className="input-box"

@@ -6,6 +6,7 @@ import { create } from './../actions/useractions'
 import Person from './icons/person'
 import Email from './icons/email'
 import Lock from './icons/lock'
+import Office from './icons/office'
 import Work from './icons/work'
 import Cake from './icons/cake'
 
@@ -120,7 +121,7 @@ class NewUser extends React.Component {
                     handleChange={::this.handleChange}
                     errorVisible={errorVisible}
                     value={newUser['employer']}
-                ><Work/></TextField>
+                ><Office/></TextField>
                 <TextField 
                     label="job title"
                     placeholder="e.g. Software Engineer"

@@ -41,6 +41,7 @@ header
 .svg-icon
 	width: 24px
 	height: 24px
+	fill: rgba(0, 0, 0, 0.25)
 
 .collapsible
 	display: none
@@ -152,6 +153,10 @@ textarea
 	&-container
 		display: flex
 		align-items: center
+		&-focus
+			.svg-icon
+				fill: $primary
+				stroke: none
 
 // #input_container { position:relative; padding:0; margin:0; }
 // #input { height:20px; margin:0; padding-left: 30px; }
