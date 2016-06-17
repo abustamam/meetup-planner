@@ -27,6 +27,11 @@ npm start
 
 Open http://localhost:8080/ in your favorite web browser.
 
+## To build
+Run `npm run build` to tell Webpack that it is a production build. This will minify assets to prepare for deployment. 
+
+`npm run deploy` will run `npm run build` before deploying.
+
 ## Misc
 
 Bug reports can go to me: [Rasheed Bustamam](rasheed.bustamam@gmail.com)
