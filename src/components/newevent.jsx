@@ -132,6 +132,14 @@ class NewEvent extends React.Component {
                 >{typeIcon}</TextField>
                 <TextField 
                     required={true}
+                    label="location"
+                    placeholder="e.g. John's house"
+                    handleChange={::this.handleChange}
+                    errorVisible={errorVisible}
+                    value={newEvent['location']}
+                ><Pin/></TextField>
+                <TextField 
+                    required={true}
                     label="start time" 
                     placeholder="hh:mm"
                     type="datetime-local"
@@ -148,27 +156,15 @@ class NewEvent extends React.Component {
                     errorVisible={errorVisible}
                     value={newEvent['end time']}
                 ><EndTime/></TextField>
-                <TextField 
-                    required={true}
-                    label="location"
-                    placeholder="e.g. John's house"
-                    handleChange={::this.handleChange}
-                    errorVisible={errorVisible}
-                    value={newEvent['location']}
-                ><Pin/></TextField>
                 <GuestList 
-                    required={true}
-                    label="guest list"
-                    placeholder="e.g. John Doe"
                     handleChange={::this.handleChange}
                     errorVisible={errorVisible}
-                    value={newEvent['guest list']}
+                    guests={newEvent['guests']}
                 />
                 <TextArea 
                     label="message to guests"
                     placeholder="e.g. Don't forget your swimsuits!"
                     handleChange={::this.handleChange}
-                    errorVisible={errorVisible}
                     value={newEvent['message to guests']}
                 ><Email/></TextArea>
                 <button type="submit" className="submit">Create New Event</button>

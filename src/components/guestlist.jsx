@@ -9,25 +9,18 @@ import classnames from 'classnames'
 class GuestList extends React.Component {
 
     static defaultProps = {
-        autofocus: false,
-        required: false,
-        type: 'text',
-        value: ''
+        guests: []
     }
 
     static propTypes = {
-        label: React.PropTypes.string.isRequired,
-        placeholder: React.PropTypes.string,
-        autofocus: React.PropTypes.bool,
-        required: React.PropTypes.bool,
-        type: React.PropTypes.string,
+        handleChange: React.PropTypes.func,
         errorVisible: React.PropTypes.bool,
-        value: React.PropTypes.string
+        guests: React.PropTypes.array
     }
 
     state = {
         errorVisible: this.props.errorVisible || false,
-        errorText: this.props.errorText || (this.props.required ? `${_.capitalize(this.props.label)} is required.` : '')
+        focus: false
     }
 
     constructor(props) {
@@ -45,23 +38,9 @@ class GuestList extends React.Component {
      */
 
 	checkValue() {
-        const { type = "text", label, required, value } = this.props
-        let errorVisible = true
-        if (type === 'email') {
-            // test if val is a valid email
-            // from http://emailregex.com/
-            const eml = new RegExp(/^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i)
-            errorVisible = !eml.test(value)
-        } else if (type === 'password') {
-            // test if val has at least 8 chars
-        	const pass = new RegExp(/^.{8,}$/)
-            errorVisible = !pass.test(value)
-        } else {
-            // return true only if field is required and val is empty
-            errorVisible = required && !value
-        }
-
-        this.setState({errorVisible})
+        const { guests } = this.props
+        const errorVisible = !guests.length
+        this.setState({errorVisible, focus: false})
     }
 
     /**
@@ -70,11 +49,17 @@ class GuestList extends React.Component {
      * @return {void}
      */
 
-	updateValue(e) {
-        const { handleChange, label } = this.props
+	updateValue(e, i) {
+        const { handleChange, guests } = this.props
 		const val = e.target.value
+        const newGuests = _.clone(guests)
+        if (i === guests.length) {
+            newGuests.push(val)
+        } else {
+            newGuests[i] = val
+        }
         this.setState({errorVisible: false})
-        handleChange(label, val)
+        handleChange('guests', newGuests)
     }
 
     /**
@@ -83,26 +68,39 @@ class GuestList extends React.Component {
      */
 
     render() {
-    	const { required, label, placeholder, type, value, autofocus } = this.props
-        const { errorVisible, errorText } = this.state
+    	const { guests } = this.props
+        const { errorVisible, focus } = this.state
+        console.log(focus)
         const labelClass = classnames({
             'input-label': true,
-            'input-label-focus': this.state.focus
+            'input-label-focus': focus !== false
         })
-        return <div className="text-field">
-            <label className={labelClass} htmlFor={label}>{_.startCase(label)}{required ? null : <span> (optional)</span>}</label>
-            <div className="errorText">{errorVisible ? errorText : ''}</div>
-        	<input
-                id={label}
-                autoFocus={autofocus}
-                required={required}
-                autoComplete={label}
-        		placeholder={placeholder}
-        		type={type} 
-                value={value}
-        		onBlur={::this.checkValue}
-        		onChange={::this.updateValue}
-    		/>
+        const textClass = classnames({
+            'text-field': true,
+            'text-field-focus': focus !== false
+        })
+        const inputClass = i => classnames({
+            'input-container': true,
+            'input-container-focus': focus === i
+        })
+        return <div className={textClass}>
+            <label className={labelClass} htmlFor="guest-list">Guest List</label>
+            <div className="errorText">{errorVisible ? 'Please add at least one guest.' : ''}</div>
+            {_.times(guests.length + 1, i => {
+                return <div className={inputClass(i)} key={i}>
+                    {guests[i] ? <Person/> : <PersonOutline/>}
+                    <input
+                        id={"guest-list"}
+                        required={i === 0}
+                        placeholder="e.g. Jane Doe"
+                        type="text" 
+                        onFocus={()=>this.setState({focus: i})}
+                        value={guests.length ? guests[i] : ''}
+                        onBlur={::this.checkValue}
+                        onChange={e => this.updateValue(e, i)}
+                    />
+                </div>
+            })}
         </div>
     }
 }
