@@ -88,7 +88,7 @@ class NewEvent extends React.Component {
 
     render() {
         const { errorVisible, newEvent } = this.state
-        const eventType = newEvent['event type']
+        const eventType = _.toLower(newEvent['event type'])
         let typeIcon = <Circle/>
 
         if (eventType === 'birthday') {
@@ -100,7 +100,6 @@ class NewEvent extends React.Component {
         if (eventType === 'work') {
             typeIcon = <Office/>
         }
-
 
         return <div className="main">
             <form className="form" onSubmit={::this.tryCreate}>
