@@ -33,7 +33,7 @@ Run `npm run build` to tell Webpack that it is a production build. This will min
 
 `npm run deploy` will run `npm run build` before deploying to `gh-pages` branch.
 
-## Description of the app
+## Description
 
 This app took me about a week to build, despite it being so simple. I took this opportunity to learn responsive web design and Sass, which explains why it took so long. 
 
