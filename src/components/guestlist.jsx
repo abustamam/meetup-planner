@@ -70,7 +70,6 @@ class GuestList extends React.Component {
     render() {
     	const { guests } = this.props
         const { errorVisible, focus } = this.state
-        console.log(focus)
         const labelClass = classnames({
             'input-label': true,
             'input-label-focus': focus !== false

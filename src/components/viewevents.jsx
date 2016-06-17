@@ -1,4 +1,5 @@
 import React from 'react'
+import moment from 'moment'
 import _ from 'lodash'
 
 class ViewEvents extends React.Component {
@@ -18,12 +19,25 @@ class ViewEvents extends React.Component {
     }
     render() {
     	const { allEvents, allUsers } = this.props
+        console.log(allEvents)
     	return <div className="main">
-    		{ _.keys(allEvents).length ? <div>
+    		{_.keys(allEvents).length ? <div>
     			{_.map(allEvents, event => {
-    				return <div key={event.id}>{event['event name']}</div>
+                    const start = moment(event['start time']).format('llll')
+                    const end = moment(event['end time']).format('llll')
+    				return <div key={event.id} className="event">
+                        <div>Event: {event['event name']}</div>
+                        <div>Host: {event['event host']}</div>
+                        <div>Type: {event['event type']}</div>
+                        <div>Time: {start} - {end}</div>
+                        <div>Guests: {_.map(event.guests, guest => {
+                            return <div key={guest}>{guest}</div>
+                        })}</div>
+                        <div>Message: {event['message to guests']}</div>
+                    </div>
     			})}
-    		</div> : <div>No events found</div>}
+    		</div> : 
+            <div>No events found</div>}
     	</div>
     }
 }

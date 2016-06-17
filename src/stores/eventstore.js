@@ -6,7 +6,22 @@ import AppDispatcher from './../dispatchers/dispatcher'
 
 const CHANGE_EVENT = 'change'
 
-const _events = {}
+const id = uuid.v4()
+
+// prepopulating with a simple event
+const _events = {
+	[id]: {
+		id,
+		'event name': `John's Birthday`,
+		'event host': `John Doe`,
+		'event type': 'birthday',
+		'location': `John's house`,
+		'start time': '2016-07-04T12:00',
+		'end time': '2016-07-04T15:00',
+		'guests': ['Jane Doe', 'Patrick Doe'],
+		'message to guests': `Don't forget your swimsuits!`
+	}
+}
 
 function create(event) {
 	const id = uuid.v4()
