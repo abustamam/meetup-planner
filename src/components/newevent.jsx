@@ -57,6 +57,18 @@ class NewEvent extends React.Component {
     }
 
     /**
+     * checks if dates/times are valid
+     * @return {boolean}
+     */
+
+    checkDate() {
+        const { newEvent } = this.state
+        const startTime = newEvent['start time']
+        const endTime = newEvent['end time']
+        return startTime && endTime && startTime < endTime
+    }
+
+    /**
      * attempts to create a new event, throws an error if any required 
      * attributes are not filled in correctly
      * @param {syntheticEvent} e - the window event
@@ -151,6 +163,7 @@ class NewEvent extends React.Component {
                     label="start time" 
                     placeholder="hh:mm"
                     type="datetime-local"
+                    checkDate={::this.checkDate}
                     errorText="Start time is invalid"
                     handleChange={::this.handleChange}
                     errorVisible={errorVisible}
@@ -161,6 +174,7 @@ class NewEvent extends React.Component {
                     label="end time" 
                     placeholder="hh:mm"
                     type="datetime-local"
+                    checkDate={::this.checkDate}
                     errorText="End time is invalid"
                     handleChange={::this.handleChange}
                     errorVisible={errorVisible}

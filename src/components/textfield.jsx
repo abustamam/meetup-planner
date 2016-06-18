@@ -50,7 +50,7 @@ class TextField extends React.Component {
      */
 
 	checkValue() {
-        const { type = "text", label, required, value } = this.props
+        const { type = "text", label, required, value, checkDate } = this.props
         let errorVisible = true
         if (type === 'email') {
             // test if val is a valid email
@@ -61,10 +61,15 @@ class TextField extends React.Component {
             // test if val has at least 8 chars
         	const pass = new RegExp(/^.{8,}$/)
             errorVisible = !pass.test(value)
+        } else if (type === 'datetime-local') {
+            console.log(checkDate(), value)
+            errorVisible = !checkDate()
         } else {
             // return true only if field is required and val is empty
             errorVisible = required && !value
         }
+
+        console.log(errorVisible)
 
         this.setState({errorVisible, focus: false})
     }
