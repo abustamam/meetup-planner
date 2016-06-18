@@ -26,6 +26,14 @@ class NewUser extends React.Component {
         this.displayName = 'NewUser'
     }
 
+    componentDidMount() {
+        this.form.addEventListener('invalid', ::this.tryCreate, true)
+    }
+
+    componentWillUnmount() {
+        this.form.removeEventListener('invalid', ::this.tryCreate)
+    }
+
     /**
      * handles changing of the user that is currently being created
      * @param {String} name - attribute name, e.g. "email"
@@ -53,13 +61,14 @@ class NewUser extends React.Component {
 
     tryCreate(e) {
         e.preventDefault()
-        this.handleCreate()
-        // const { name, email, password } = this.state.newUser
-        // if (name && email && password) {
-        //     this.handleCreate()
-        // } else {
-        //     this.setState({errorVisible: true})
-        // }
+        // this.handleCreate()
+
+        const { name, email, password } = this.state.newUser
+        if (name && email && password) {
+            this.handleCreate()
+        } else {
+            this.setState({errorVisible: true})
+        }
     }
 
     /**
@@ -84,7 +93,7 @@ class NewUser extends React.Component {
     render() {
         const { errorVisible, newUser } = this.state
         return <div className="main">
-            <form className="form" onSubmit={::this.tryCreate}>
+            <form className="form" onSubmit={::this.tryCreate} ref={c => this.form = c}>
                 <span className="form-label">All fields required unless marked optional</span>
                 <TextField 
                     autofocus={true}

@@ -36,7 +36,12 @@ class TextField extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({errorVisible: nextProps.errorVisible})
+        const { errorVisible } = nextProps
+        if (errorVisible) {
+            this.checkValue()
+        } else {
+            this.setState({errorVisible})
+        }
     }
 
     /**
@@ -73,7 +78,7 @@ class TextField extends React.Component {
 	updateValue(e) {
         const { handleChange, label } = this.props
 		const val = e.target.value
-        this.setState({errorVisible: false})
+        // this.setState({errorVisible: false})
         handleChange(label, val)
     }
 

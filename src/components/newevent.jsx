@@ -30,6 +30,14 @@ class NewEvent extends React.Component {
         this.displayName = 'NewEvent'
     }
 
+    componentDidMount() {
+        this.form.addEventListener('invalid', e => this.tryCreate(e), true)
+    }
+
+    componentWillUnmount() {
+        this.form.removeEventListener('invalid')
+    }
+
     /**
      * handles changing of the event that is currently being created
      * @param {String} name - attribute name, e.g. "event name"
@@ -57,14 +65,15 @@ class NewEvent extends React.Component {
 
     tryCreate(e) {
         e.preventDefault()
-        this.handleCreate()
-        // const { name, email, password } = this.state.newEvent
-        // if (name && email && password) {
-        //     this.handleCreate()
-        // } else {
-        //     this.setState({errorVisible: true})
-        //     // this.handleCreate()
-        // }
+        // this.handleCreate()
+        const { newEvent } = this.state
+        if ( newEvent['event name'] && newEvent['event host'] && newEvent['event type'] &&
+             newEvent.location && newEvent['start time'] && newEvent['end time'] &&
+             newEvent.guests && newEvent.guests.length) {
+                this.handleCreate()
+        } else {
+            this.setState({errorVisible: true})
+        }
     }
 
     /**
@@ -102,7 +111,7 @@ class NewEvent extends React.Component {
         }
 
         return <div className="main">
-            <form className="form" onSubmit={::this.tryCreate}>
+            <form className="form" onSubmit={::this.tryCreate} ref={c => this.form = c}>
                 <span className="form-label">All fields required unless marked optional</span>
                 <TextField 
                     autofocus={true}
@@ -142,6 +151,7 @@ class NewEvent extends React.Component {
                     label="start time" 
                     placeholder="hh:mm"
                     type="datetime-local"
+                    errorText="Start time is invalid"
                     handleChange={::this.handleChange}
                     errorVisible={errorVisible}
                     value={newEvent['start time']}
@@ -151,6 +161,7 @@ class NewEvent extends React.Component {
                     label="end time" 
                     placeholder="hh:mm"
                     type="datetime-local"
+                    errorText="End time is invalid"
                     handleChange={::this.handleChange}
                     errorVisible={errorVisible}
                     value={newEvent['end time']}
@@ -162,7 +173,7 @@ class NewEvent extends React.Component {
                 />
                 <TextArea 
                     label="message to guests"
-                    placeholder="e.g. Don't forget your swimsuits!"
+                    placeholder="e.g. Bring a snack!"
                     handleChange={::this.handleChange}
                     value={newEvent['message to guests']}
                 ><Email/></TextArea>
