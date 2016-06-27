@@ -31,7 +31,7 @@ class NewUser extends React.Component {
     }
 
     componentWillUnmount() {
-        this.form.removeEventListener('invalid', ::this.tryCreate)
+        this.form.removeEventListener('invalid', this.tryCreate)
     }
 
     /**

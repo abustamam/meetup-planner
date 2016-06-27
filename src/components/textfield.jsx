@@ -61,15 +61,13 @@ class TextField extends React.Component {
             // test if val has at least 8 chars
         	const pass = new RegExp(/^.{8,}$/)
             errorVisible = !pass.test(value)
-        } else if (type === 'datetime-local') {
-            console.log(checkDate(), value)
-            errorVisible = !checkDate()
-        } else {
+        } /*else if (type === 'datetime-local') {
+            // console.log(checkDate(), value)
+            // errorVisible = !checkDate()
+        }*/ else {
             // return true only if field is required and val is empty
             errorVisible = required && !value
         }
-
-        console.log(errorVisible)
 
         this.setState({errorVisible, focus: false})
     }

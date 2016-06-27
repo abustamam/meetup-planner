@@ -1,18 +1,17 @@
 import React from 'react'
 import update from 'react-addons-update'
 import _ from 'lodash'
+import { create } from './../actions/eventactions'
 import TextField from './textfield'
 import TextArea from './textarea'
 import GuestList from './guestlist'
-import { create } from './../actions/eventactions'
+import Times from './times'
 import Label from './icons/label'
 import Person from './icons/person'
 import Circle from './icons/circle'
 import Cake from './icons/cake'
 import Party from './icons/party'
 import Office from './icons/office'
-import BeginTime from './icons/begintime'
-import EndTime from './icons/endtime'
 import Pin from './icons/pin'
 import Email from './icons/email'
 
@@ -31,11 +30,11 @@ class NewEvent extends React.Component {
     }
 
     componentDidMount() {
-        this.form.addEventListener('invalid', e => this.tryCreate(e), true)
+        this.form.addEventListener('invalid', ::this.tryCreate, true)
     }
 
     componentWillUnmount() {
-        this.form.removeEventListener('invalid')
+        this.form.removeEventListener('invalid', this.tryCreate)
     }
 
     /**
@@ -65,7 +64,8 @@ class NewEvent extends React.Component {
         const { newEvent } = this.state
         const startTime = newEvent['start time']
         const endTime = newEvent['end time']
-        return startTime && endTime && startTime < endTime
+        console.log(startTime, endTime)
+        return startTime < endTime
     }
 
     /**
@@ -158,28 +158,13 @@ class NewEvent extends React.Component {
                     errorVisible={errorVisible}
                     value={newEvent['location']}
                 ><Pin/></TextField>
-                <TextField 
-                    required={true}
-                    label="start time" 
-                    placeholder="hh:mm"
-                    type="datetime-local"
+                <Times 
                     checkDate={::this.checkDate}
-                    errorText="Start time is invalid"
                     handleChange={::this.handleChange}
                     errorVisible={errorVisible}
-                    value={newEvent['start time']}
-                ><BeginTime/></TextField>
-                <TextField 
-                    required={true}
-                    label="end time" 
-                    placeholder="hh:mm"
-                    type="datetime-local"
-                    checkDate={::this.checkDate}
-                    errorText="End time is invalid"
-                    handleChange={::this.handleChange}
-                    errorVisible={errorVisible}
-                    value={newEvent['end time']}
-                ><EndTime/></TextField>
+                    startTime={newEvent['start time']}
+                    endTime={newEvent['end time']}
+                />
                 <GuestList 
                     handleChange={::this.handleChange}
                     errorVisible={errorVisible}
