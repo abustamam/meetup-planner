@@ -4,7 +4,6 @@ import _ from 'lodash'
 import Validation from 'react-validation'
 import validator from 'validator'
 import classnames from 'classnames'
-import TextField from './textfield.jsx'
 import { create } from './../actions/useractions'
 import InputGroup from './inputgroup'
 

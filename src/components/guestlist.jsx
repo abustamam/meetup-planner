@@ -14,22 +14,17 @@ class GuestList extends React.Component {
 
     static propTypes = {
         handleChange: React.PropTypes.func,
-        errorVisible: React.PropTypes.bool,
         guests: React.PropTypes.array
     }
 
     state = {
-        errorVisible: this.props.errorVisible || false,
+        errorVisible: false,
         focus: false
     }
 
     constructor(props) {
         super(props)
         this.displayName = 'GuestList'
-    }
-
-    componentWillReceiveProps(nextProps) {
-        this.setState({errorVisible: nextProps.errorVisible})
     }
 
     /**
@@ -39,7 +34,10 @@ class GuestList extends React.Component {
 
 	checkValue() {
         const { guests } = this.props
+        console.log(guests)
+        console.log(_.compact(guests).length)
         const errorVisible = !_.compact(guests).length
+        console.log(errorVisible)
         this.setState({errorVisible, focus: false})
     }
 
