@@ -19,7 +19,7 @@ Validation.extendErrors({
     }
 })
 
-/** New user creation screen
+/** New event creation screen
   * @extends React.Component
   */
 class NewEvent extends React.Component {
@@ -45,24 +45,9 @@ class NewEvent extends React.Component {
             $merge: {[label]: value}
         })
 
-        console.log(label,value, newObj)
-
         this.setState({
             newEvent: newObj
         })
-    }
-
-    /**
-     * checks if dates/times are valid
-     * @return {boolean}
-     */
-
-    checkDate() {
-        const { newEvent } = this.state
-        const startTime = newEvent['start time']
-        const endTime = newEvent['end time']
-        console.log(startTime, endTime)
-        return startTime < endTime
     }
 
     /**
@@ -91,9 +76,23 @@ class NewEvent extends React.Component {
     handleBlur(label) {
         this.setState({focus: null})
         const component = this[label]
+        const val = component.state.value
         if (!component) return
-        if (!component.state.value) {
+        if (!val) {
             component.showError('Required')
+        } else if (label === 'start' || label === 'end') {
+            const { newEvent } = this.state
+            const startTime = newEvent.start
+            const startComponent = this.start
+            const endTime = newEvent.end
+            const endComponent = this.end
+            if (startTime >= endTime) {
+                startComponent.showError('Times are invalid')
+                endComponent.showError('Times are invalid')
+            } else {
+                startComponent.hideError()
+                endComponent.hideError()
+            }
         }
     }
 
@@ -171,7 +170,7 @@ class NewEvent extends React.Component {
                         ref={c => this.host = c}
                         name='host'
                         wrapper={{component: InputGroup}}
-                        type='host'
+                        type='text'
                         placeholder="e.g. John"
                         blocking='input'
                         icon='person'
@@ -193,7 +192,7 @@ class NewEvent extends React.Component {
                         ref={c => this.type = c}
                         name='type'
                         wrapper={{component: InputGroup}}
-                        type='type'
+                        type='text'
                         placeholder="e.g. birthday"
                         blocking='input'
                         icon={eventType}
@@ -207,6 +206,54 @@ class NewEvent extends React.Component {
                         }]}
                     />
                 </div>
+                <div className={inputGroupClass('start')}>
+                    <label className={inputLabelClass('start')}>
+                        Start Time
+                    </label>
+                    <Validation.Input
+                        ref={c => this.start = c}
+                        name='start'
+                        wrapper={{component: InputGroup}}
+                        type="datetime-local"
+                        placeholder="mm/dd/yyyy hh:mm"
+                        blocking='input'
+                        icon='begintime'
+                        containerClassName={inputClass('start')}
+                        onFocus={()=>this.setState({focus: 'start'})}
+                        onBlur={()=>this.handleBlur('start')}
+                        onChange={::this.handleChange}
+                        focus={this.state.focus === 'start'}
+                        validations={[{
+                            rule: 'isRequired'
+                        }]}
+                    />
+                </div>
+                <div className={inputGroupClass('end')}>
+                    <label className={inputLabelClass('end')}>
+                        End Time
+                    </label>
+                    <Validation.Input
+                        ref={c => this.end = c}
+                        name='end'
+                        wrapper={{component: InputGroup}}
+                        type="datetime-local"
+                        placeholder="mm/dd/yyyy hh:mm"
+                        blocking='input'
+                        icon='endtime'
+                        containerClassName={inputClass('end')}
+                        onFocus={()=>this.setState({focus: 'end'})}
+                        onBlur={()=>this.handleBlur('end')}
+                        onChange={::this.handleChange}
+                        focus={this.state.focus === 'end'}
+                        validations={[{
+                            rule: 'isRequired'
+                        }]}
+                    />
+                </div>
+                <GuestList 
+                    handleChange={::this.handleChange}
+                    guests={newEvent.guests}
+                />
                 <div className={inputGroupClass('location')}>
                     <label className={inputLabelClass('location')}>
                         Event Location
@@ -215,7 +262,7 @@ class NewEvent extends React.Component {
                         ref={c => this.location = c}
                         name='location'
                         wrapper={{component: InputGroup}}
-                        type='location'
+                        type='text'
                         placeholder="e.g. John's house"
                         blocking='input'
                         icon='pin'
@@ -229,94 +276,16 @@ class NewEvent extends React.Component {
                         }]}
                     />
                 </div>
-                <GuestList 
-                    handleChange={::this.handleChange}
-                    guests={newEvent.guests}
-                />
                 <TextArea 
                     label="message to guests"
                     placeholder="e.g. Bring a snack!"
                     handleChange={::this.handleChange}
                     value={newEvent.message}
                 />
-                <Validation.Button blocking="button" className="submit" disabledClassName="submit-disabled" disabled={false} value="Create New User" />
+                <Validation.Button blocking="button" className="submit" disabledClassName="submit-disabled" disabled={false} value="Create New Event" />
             </Validation.Form>
         </div>
     }
-
-    // render() {
-    //     const { errorVisible, newEvent } = this.state
-    //     const eventType = _.toLower(newEvent['event type'])
-    //     let typeIcon = <Circle/>
-
-    //     if (eventType === 'birthday') {
-    //         typeIcon = <Cake/>
-    //     }
-    //     if (eventType === 'party') {
-    //         typeIcon = <Party/>
-    //     }
-    //     if (eventType === 'work') {
-    //         typeIcon = <Office/>
-    //     }
-
-    //     return <div className="main">
-    //         <form className="form" onSubmit={::this.tryCreate} ref={c => this.form = c}>
-    //             <span className="form-label">All fields required unless marked optional</span>
-    //             <TextField 
-    //                 autofocus={true}
-    //                 required={true}
-    //                 label="event name"
-    //                 placeholder="e.g. John's Birthday"
-    //                 handleChange={::this.handleChange}
-    //                 errorVisible={errorVisible}
-    //                 value={newEvent['event name']}
-    //             ><Label/></TextField>
-    //             <TextField 
-    //                 required={true}
-    //                 label="event host"
-    //                 placeholder="e.g. John"
-    //                 handleChange={::this.handleChange}
-    //                 errorVisible={errorVisible}
-    //                 value={newEvent['event host']}
-    //             ><Person/></TextField>
-    //             <TextField 
-    //                 required={true}
-    //                 label="event type"
-    //                 placeholder="e.g. birthday"
-    //                 handleChange={::this.handleChange}
-    //                 errorVisible={errorVisible}
-    //                 value={newEvent['event type']}
-    //             >{typeIcon}</TextField>
-    //             <TextField 
-    //                 required={true}
-    //                 label="location"
-    //                 placeholder="e.g. John's house"
-    //                 handleChange={::this.handleChange}
-    //                 errorVisible={errorVisible}
-    //                 value={newEvent['location']}
-    //             ><Pin/></TextField>
-    //             <Times 
-    //                 checkDate={::this.checkDate}
-    //                 handleChange={::this.handleChange}
-    //                 errorVisible={errorVisible}
-    //                 startTime={newEvent['start time']}
-    //                 endTime={newEvent['end time']}
-    //             />
-                // <GuestList 
-                //     handleChange={::this.handleChange}
-                //     errorVisible={errorVisible}
-                //     guests={newEvent['guests']}
-                // />
-    //             <TextArea 
-    //                 label="message to guests"
-    //                 placeholder="e.g. Bring a snack!"
-    //                 handleChange={::this.handleChange}
-    //                 value={newEvent['message to guests']}
-    //             ><Email/></TextArea>
-    //             <button type="submit" className="submit">Create New Event</button>
-    //         </form>
-    //     </div>
-    // }
 }
 
 export default NewEvent

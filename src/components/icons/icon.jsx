@@ -10,7 +10,7 @@ class Icon extends React.Component {
 
     	const renderedIcon = icn => {
     		switch (icn) {
-    			case 'begin-time':
+    			case 'begintime':
     				return <g>
 		            	<polyline points="0,2 3,2 3,22 0,22"/>
 		            	<polyline points="3,9 16,9 16,5 23,12 16,19 16,15 3,15"/>
