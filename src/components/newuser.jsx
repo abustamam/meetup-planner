@@ -1,6 +1,9 @@
 import React from 'react'
 import update from 'react-addons-update'
 import _ from 'lodash'
+import Validation from 'react-validation'
+import validator from 'validator'
+import classnames from 'classnames'
 import TextField from './textfield.jsx'
 import { create } from './../actions/useractions'
 import Person from './icons/person'
@@ -9,7 +12,28 @@ import Lock from './icons/lock'
 import Office from './icons/office'
 import Work from './icons/work'
 import Cake from './icons/cake'
+import InputGroup from './inputgroup'
 
+
+Validation.extendErrors({
+    isRequired: {
+        className: 'ui-input_state_empty',
+        message: 'Required',
+        rule: function(value) {
+            return Boolean(validator.trim(value));
+        }
+    },
+    isEmail: {
+        className: 'ui-input_state_email-pattern-failed',
+        message: 'Invalid Email'
+    },
+    longPassword: {
+        message: 'Password must have more than 8 characters',
+        rule: function(value) {
+            return value.length >= 8
+        }
+    }
+})
 
 /** New user creation screen
   * @extends React.Component
@@ -17,7 +41,8 @@ import Cake from './icons/cake'
 class NewUser extends React.Component {
     state = {
         newUser: {},
-        errorVisible: false
+        errorVisible: false,
+        focus: null
     }
 
 
@@ -26,13 +51,13 @@ class NewUser extends React.Component {
         this.displayName = 'NewUser'
     }
 
-    componentDidMount() {
-        this.form.addEventListener('invalid', ::this.tryCreate, true)
-    }
+    // componentDidMount() {
+    //     this.form.addEventListener('invalid', ::this.tryCreate, true)
+    // }
 
-    componentWillUnmount() {
-        this.form.removeEventListener('invalid', this.tryCreate)
-    }
+    // componentWillUnmount() {
+    //     this.form.removeEventListener('invalid', this.tryCreate)
+    // }
 
     /**
      * handles changing of the user that is currently being created
@@ -71,17 +96,25 @@ class NewUser extends React.Component {
         }
     }
 
+    handleBlur(label) {
+        this.setState({focus: null})
+        // this.form.forceValidate(true)
+        const component = this[label]
+        if (!component) return
+        console.log(component.state.value)
+        if (!component.state.value) {
+            component.showError('Required')
+        }
+    }
+
     /**
      * handles creation of new user
      * @return {void}
      */
 
     handleCreate() {
-        const user = {
-            ...this.state.newUser
-        }
-        create(user)
-        this.setState({newUser: {}, errorVisible: false})
+        create(this.state.newUser)
+        this.setState({newUser: {}})
         this.props.setActiveTab('new event')
     }
 
@@ -92,62 +125,153 @@ class NewUser extends React.Component {
 
     render() {
         const { errorVisible, newUser } = this.state
+
+        const inputLabelClass = label => {
+            return classnames({
+                'input-label': true,
+                'input-label-focus': this.state.focus === label
+            })
+        }
+
+        const inputGroupClass = label => {
+            return classnames({
+                'input-group': true,
+                'input-group-focus': this.state.focus === label
+            })
+        }
+
+        const inputClass = label => {
+            return classnames({
+                'input': true,
+                'input-focus': this.state.focus === label
+            })  
+        } 
+
         return <div className="main">
-            <form className="form" onSubmit={::this.tryCreate} ref={c => this.form = c}>
+            <Validation.Form onSubmit={this.tryCreate} ref={c => this.form = c}>
                 <span className="form-label">All fields required unless marked optional</span>
-                <TextField 
-                    autofocus={true}
-                    required={true}
-                    label="name"
-                    placeholder="e.g. John Doe"
-                    handleChange={::this.handleChange}
-                    errorVisible={errorVisible}
-                    value={newUser['name']}
-                ><Person/></TextField>
-                <TextField 
-                    required={true}
-                    label="email"
-                    placeholder="e.g. name@example.com"
-                    errorText="Email address is invalid"
-                    type="email"
-                    handleChange={::this.handleChange}
-                    errorVisible={errorVisible}
-                    value={newUser['email']}
-                ><Email/></TextField>
-                <TextField 
-                    required={true}
-                    label="password" 
-                    placeholder="Minimum 8 characters"
-                    errorText="Password must have minimum of 8 characters"
-                    type="password"
-                    handleChange={::this.handleChange}
-                    errorVisible={errorVisible}
-                    value={newUser['password']}
-                ><Lock/></TextField>
-                <TextField 
-                    label="employer"
-                    placeholder="e.g. Google"
-                    handleChange={::this.handleChange}
-                    errorVisible={errorVisible}
-                    value={newUser['employer']}
-                ><Office/></TextField>
-                <TextField 
-                    label="job title"
-                    placeholder="e.g. Software Engineer"
-                    handleChange={::this.handleChange}
-                    errorVisible={errorVisible}
-                    value={newUser['job title']}
-                ><Work/></TextField>
-                <TextField 
-                    label="birthday"
-                    placeholder="mm/dd/yyyy"
-                    type="date"
-                    handleChange={::this.handleChange}
-                    errorVisible={errorVisible}
-                    value={newUser['birthday']}
-                ><Cake/></TextField>
-                <button type="submit" className="submit">Create New User</button>
-            </form>
+                <div className={inputGroupClass('name')}>
+                    <label className={inputLabelClass('name')}>
+                        Name
+                    </label>
+                    <Validation.Input
+                        ref={c => this.name = c}
+                        name='name'
+                        wrapper={{component: InputGroup}}
+                        type='text'
+                        autoFocus={true}
+                        placeholder="e.g. John Doe"
+                        blocking='input'
+                        icon='person'
+                        containerClassName={inputClass('name')}
+                        onFocus={()=>this.setState({focus: 'name'})}
+                        onBlur={()=>this.handleBlur('name')}
+                        onChange={()=>this.handleChange()}
+                        focus={this.state.focus === 'name'}
+                        validations={[{
+                            rule: 'isRequired'
+                        }]}
+                    />
+                </div>
+                <div className={inputGroupClass('email')}>
+                    <label className={inputLabelClass('email')}>
+                        Email
+                    </label>
+                    <Validation.Input
+                        ref={c => this.email = c}
+                        name='email'
+                        wrapper={{component: InputGroup}}
+                        type='email'
+                        placeholder="e.g. name@example.com"
+                        blocking='input'
+                        icon='email'
+                        containerClassName={inputClass('email')}
+                        onFocus={()=>this.setState({focus: 'email'})}
+                        onBlur={()=>this.handleBlur('email')}
+                        focus={this.state.focus === 'email'}
+                        validations={[{
+                            rule: 'isRequired'
+                        },{
+                            rule: 'isEmail'
+                        }]}
+                    />
+                </div>
+                <div className={inputGroupClass('password')}>
+                    <label className={inputLabelClass('password')}>
+                        Password
+                    </label>
+                    <Validation.Input
+                        ref={c => this.password = c}
+                        name='password'
+                        wrapper={{component: InputGroup}}
+                        type='password'
+                        placeholder="Minimum 8 characters"
+                        blocking='input'
+                        icon='lock'
+                        containerClassName={inputClass('password')}
+                        onFocus={()=>this.setState({focus: 'password'})}
+                        onBlur={()=>this.handleBlur('password')}
+                        focus={this.state.focus === 'password'}
+                        validations={[{
+                            rule: 'isRequired'
+                        },{
+                            rule: 'longPassword'
+                        }]}
+                    />
+                </div>
+                <div className={inputGroupClass('employer')}>
+                    <label className={inputLabelClass('employer')}>
+                        Employer (optional)
+                    </label>
+                    <Validation.Input
+                        name='employer'
+                        wrapper={{component: InputGroup}}
+                        type='text'
+                        placeholder="e.g. Google"
+                        blocking='input'
+                        icon='office'
+                        containerClassName={inputClass('employer')}
+                        onFocus={()=>this.setState({focus: 'employer'})}
+                        onBlur={::this.handleBlur}
+                        focus={this.state.focus === 'employer'}
+                    />
+                </div>
+                <div className={inputGroupClass('job')}>
+                    <label className={inputLabelClass('job')}>
+                        Job Title (optional)
+                    </label>
+                    <Validation.Input
+                        name='job'
+                        wrapper={{component: InputGroup}}
+                        type='text'
+                        placeholder="e.g. Software Engineer"
+                        blocking='input'
+                        icon='work'
+                        containerClassName={inputClass('job')}
+                        onFocus={()=>this.setState({focus: 'job'})}
+                        onBlur={::this.handleBlur}
+                        focus={this.state.focus === 'job'}
+                    />
+                </div>
+                <div className={inputGroupClass('birthday')}>
+                    <label className={inputLabelClass('birthday')}>
+                        Birthday (optional)
+                    </label>
+                    <Validation.Input
+                        name='birthday'
+                        wrapper={{component: InputGroup}}
+                        type='date'
+                        placeholder="mm/dd/yyyy"
+                        blocking='input'
+                        icon='cake'
+                        containerClassName={inputClass('birthday')}
+                        onFocus={()=>this.setState({focus: 'birthday'})}
+                        onBlur={::this.handleBlur}
+                        focus={this.state.focus === 'birthday'}
+                    />
+                </div>
+                <Validation.Button blocking="button" className="submit" disabledClassName="submit-disabled" value="Create New User" />
+            </Validation.Form>
         </div>
     }
 }

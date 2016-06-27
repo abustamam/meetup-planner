@@ -1,11 +1,9 @@
-
-
 import React from 'react'
 
-class Office extends React.Component {
+class Party extends React.Component {
     constructor(props) {
         super(props)
-        this.displayName = 'Office'
+        this.displayName = 'Party'
     }
     render() {
     	// taken from http://www.flaticon.com/free-icon/balloons_113192
@@ -22,4 +20,4 @@ class Office extends React.Component {
     }
 }
 
-export default Office
+export default Party

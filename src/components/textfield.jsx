@@ -1,32 +1,61 @@
 import React from 'react'
+import Validation from 'react-validation'
+import validator from 'validator'
 import classnames from 'classnames'
 import _ from 'lodash'
+import InputGroup from './inputgroup'
+
+Validation.extendErrors({
+    isRequired: {
+        className: 'ui-input_state_empty',
+        message: 'required',
+        rule: function(value) {
+            return Boolean(validator.trim(value));
+        }
+    },
+    isEmail: {
+        className: 'ui-input_state_email-pattern-failed',
+        message: 'Invalid Email'
+    }
+})
 
 /** A single text field
   * @extends React.Component
   */
 class TextField extends React.Component {
 
+    // wrapper={{component: InputGroup}}
+    // type='text'
+    // autoFocus={true}
+    // blocking='input'
+    // icon='person'
+    // containerClassName={inputClass('name')}
+    // onFocus={()=>this.setState({focus: 'name'})}
+    // onBlur={()=>this.setState({focus: null})}
+    // focus={this.state.focus === 'name'}
+    // placeholder="e.g. John Doe"
+    // validations={[{
+    //     rule: 'isRequired'
+    // }]}
+    // name='name'
+
     static defaultProps = {
-        autofocus: false,
-        required: false,
-        type: 'text',
-        value: ''
+        autoFocus: false,
+        type: 'text'
     }
 
     static propTypes = {
-        label: React.PropTypes.string.isRequired,
-        placeholder: React.PropTypes.string,
-        autofocus: React.PropTypes.bool,
-        required: React.PropTypes.bool,
+        wrapper: React.PropTypes.object,
         type: React.PropTypes.string,
-        errorVisible: React.PropTypes.bool,
+        blocking: React.PropTypes.string,
+        autoFocus: React.PropTypes.bool,
+        icon: React.PropTypes.string,
+        placeholder: React.PropTypes.string,
+        validations: React.PropTypes.array,
         value: React.PropTypes.string
     }
 
     state = {
-        errorVisible: this.props.errorVisible || false,
-        errorText: this.props.errorText || (this.props.required ? `${_.capitalize(this.props.label)} is required.` : ''),
         focus: false
     }
 
@@ -36,12 +65,12 @@ class TextField extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const { errorVisible } = nextProps
-        if (errorVisible) {
-            this.checkValue()
-        } else {
-            this.setState({errorVisible})
-        }
+        // const { errorVisible } = nextProps
+        // if (errorVisible) {
+        //     this.checkValue()
+        // } else {
+        //     this.setState({errorVisible})
+        // }
     }
 
     /**
@@ -91,39 +120,38 @@ class TextField extends React.Component {
      */
 
     render() {
-    	const { required, label, placeholder, type, value, autofocus, children } = this.props
+    	const { validations, icon, label, placeholder, type, value, autoFocus, children } = this.props
         const { errorVisible, errorText } = this.state
-        const labelClass = classnames({
+        const inputGroupClass = classnames({
+            'input-group': true,
+            'input-group-focus': this.state.focus
+        })
+        const inputLabelClass = classnames({
             'input-label': true,
             'input-label-focus': this.state.focus
         })
-        const textClass = classnames({
-            'text-field': true,
-            'text-field-focus': this.state.focus
-        })
         const inputClass = classnames({
-            'input-container': true,
-            'input-container-focus': this.state.focus
+            'input': true,
+            'input-focus': this.state.focus
         })
-        return <div className={textClass}>
-            <label className={labelClass} htmlFor={label}>{_.startCase(label)}{required ? null : <span> (optional)</span>}</label>
-            <div className="errorText">{errorVisible ? errorText : ''}</div>
-            <div className={inputClass}>
-                {children}
-                <input
-                    className="input-box"
-                    id={label}
-                    autoFocus={autofocus}
-                    onFocus={()=>this.setState({focus: true})}
-                    required={required}
-                    autoComplete={label}
-                	placeholder={placeholder}
-                	type={type} 
-                    value={value}
-                	onBlur={::this.checkValue}
-                	onChange={::this.updateValue}
-                />
-            </div>
+        return <div className={inputGroupClass}>
+            <label className={inputLabelClass}>
+                {_.startCase(label)}
+            </label>
+            <Validation.Input
+                name={label}
+                wrapper={{component: InputGroup}}
+                type={type}
+                autoFocus={autoFocus}
+                blocking='input'
+                icon={icon}
+                containerClassName={inputClass}
+                onFocus={()=>this.setState({focus: true})}
+                onBlur={()=>this.setState({focus: false})}
+                focus={this.state.focus}
+                placeholder={placeholder}
+                validations={validations}
+            />
         </div>
     }
 }
