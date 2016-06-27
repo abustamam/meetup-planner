@@ -39,7 +39,7 @@ class GuestList extends React.Component {
 
 	checkValue() {
         const { guests } = this.props
-        const errorVisible = !guests.length
+        const errorVisible = !_.compact(guests).length
         this.setState({errorVisible, focus: false})
     }
 
@@ -59,7 +59,11 @@ class GuestList extends React.Component {
             newGuests[i] = val
         }
         this.setState({errorVisible: false})
-        handleChange('guests', newGuests)
+
+        handleChange({target: {
+            name: 'guests', 
+            value: newGuests
+        }})
     }
 
     /**
@@ -84,7 +88,7 @@ class GuestList extends React.Component {
         })
         return <div className={textClass}>
             <label className={labelClass} htmlFor="guest-list">Guest List</label>
-            <div className="errorText">{errorVisible ? 'Please add at least one guest.' : ''}</div>
+            <div className="ui-hint ui-hint-override">{errorVisible ? 'Please add at least one guest.' : ''}</div>
             {_.times(guests.length + 1, i => {
                 return <div className={inputClass(i)} key={i}>
                     {guests[i] ? <Person/> : <PersonOutline/>}

@@ -1,6 +1,7 @@
 import React from 'react'
 import classnames from 'classnames'
 import _ from 'lodash'
+import Icon from './icons/icon'
 
 /** A single text field
   * @extends React.Component
@@ -46,7 +47,10 @@ class TextArea extends React.Component {
         const scrollHeight = this.textarea.scrollHeight
         const rows = _.round(Math.abs(scrollHeight - this.state.scrollHeight) / 26 + 1)
         this.setState({rows})
-        handleChange(label, val)
+        handleChange({target: {
+            name: 'message',
+            value: val
+        }})
     }
 
     /**
@@ -57,22 +61,22 @@ class TextArea extends React.Component {
     render() {
     	const { label, placeholder, value, children } = this.props
         const { rows } = this.state
-        const labelClass = classnames({
-            'input-label': true,
-            'input-label-focus': this.state.focus
-        })
-        const textClass = classnames({
+        const inputGroupClass = classnames({
             'text-field': true,
             'text-field-focus': this.state.focus
         })
-        const inputClass = classnames({
+        const inputLabelClass = classnames({
+            'input-label': true,
+            'input-label-focus': this.state.focus
+        })
+        const inputContainerClass = classnames({
             'input-container': true,
             'input-container-focus': this.state.focus
         })
-        return <div className={textClass}>
-            <label className={labelClass} htmlFor={label}>{_.startCase(label)}<span> (optional)</span></label>
-            <div className={inputClass}>
-                {children}
+        return <div className={inputGroupClass}>
+            <label className={inputLabelClass} htmlFor={label}>{_.startCase(label)}<span> (optional)</span></label>
+            <div className={inputContainerClass}>
+                <Icon type="email"/>
                 <textarea
                 	ref={c => this.textarea = c}
                 	rows={rows}

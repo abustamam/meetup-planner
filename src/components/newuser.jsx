@@ -6,25 +6,17 @@ import validator from 'validator'
 import classnames from 'classnames'
 import TextField from './textfield.jsx'
 import { create } from './../actions/useractions'
-import Person from './icons/person'
-import Email from './icons/email'
-import Lock from './icons/lock'
-import Office from './icons/office'
-import Work from './icons/work'
-import Cake from './icons/cake'
 import InputGroup from './inputgroup'
 
 
 Validation.extendErrors({
     isRequired: {
-        className: 'ui-input_state_empty',
         message: 'Required',
         rule: function(value) {
             return Boolean(validator.trim(value));
         }
     },
     isEmail: {
-        className: 'ui-input_state_email-pattern-failed',
         message: 'Invalid Email'
     },
     longPassword: {
@@ -41,7 +33,6 @@ Validation.extendErrors({
 class NewUser extends React.Component {
     state = {
         newUser: {},
-        errorVisible: false,
         focus: null
     }
 
@@ -51,18 +42,9 @@ class NewUser extends React.Component {
         this.displayName = 'NewUser'
     }
 
-    // componentDidMount() {
-    //     this.form.addEventListener('invalid', ::this.tryCreate, true)
-    // }
-
-    // componentWillUnmount() {
-    //     this.form.removeEventListener('invalid', this.tryCreate)
-    // }
-
     /**
      * handles changing of the user that is currently being created
-     * @param {String} name - attribute name, e.g. "email"
-     * @param {String} value - value of prop, e.g. "rasheed.bustamam@gmail.com"
+     * @param {Event} e - Synthetic event
      * @return {void}
      */
 
@@ -72,8 +54,6 @@ class NewUser extends React.Component {
         const newObj = update(this.state.newUser, {
             $merge: {[label]: value}
         })
-
-        console.log(newObj)
 
         this.setState({
             newUser: newObj
@@ -99,12 +79,15 @@ class NewUser extends React.Component {
         }
     }
 
+    /**
+     * handle blur
+     * @param {String} label - attribute name, e.g. "email"
+     */
+
     handleBlur(label) {
         this.setState({focus: null})
-        // this.form.forceValidate(true)
         const component = this[label]
         if (!component) return
-        console.log(component.state.value)
         if (!component.state.value) {
             component.showError('Required')
         }
@@ -127,7 +110,7 @@ class NewUser extends React.Component {
      */
 
     render() {
-        const { errorVisible, newUser } = this.state
+        const { newUser } = this.state
 
         const inputLabelClass = label => {
             return classnames({
