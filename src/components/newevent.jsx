@@ -87,8 +87,8 @@ class NewEvent extends React.Component {
             const endTime = newEvent.end
             const endComponent = this.end
             if (startTime >= endTime) {
-                startComponent.showError('Times are invalid')
-                endComponent.showError('Times are invalid')
+                startComponent.showError('Start time must be before end time')
+                endComponent.showError('End time must be after start time')
             } else {
                 startComponent.hideError()
                 endComponent.hideError()
