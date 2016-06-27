@@ -37,6 +37,8 @@ Run `npm run build` to tell Webpack that it is a production build. This will min
 
 This app took me about a week to build, despite it being so simple. I took this opportunity to learn responsive web design and Sass, which explains why it took so long. 
 
+It took me another week to figure out how to wire up error handling.
+
 ### Flow
 
 Every app begins with a story, and this story begins with you (the user). 
