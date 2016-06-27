@@ -66,14 +66,17 @@ class NewUser extends React.Component {
      * @return {void}
      */
 
-    handleChange(name, value) {
+    handleChange(e) {
+        const label = e.target.name
+        const value = e.target.value
         const newObj = update(this.state.newUser, {
-            $merge: {[name]: value}
+            $merge: {[label]: value}
         })
 
+        console.log(newObj)
+
         this.setState({
-            newUser: newObj,
-            errorVisible: false
+            newUser: newObj
         })
     }
 
@@ -86,13 +89,13 @@ class NewUser extends React.Component {
 
     tryCreate(e) {
         e.preventDefault()
-        // this.handleCreate()
+        console.log(this.state.newUser)
 
         const { name, email, password } = this.state.newUser
         if (name && email && password) {
             this.handleCreate()
         } else {
-            this.setState({errorVisible: true})
+            this.form.forceValidate(true)
         }
     }
 
@@ -148,7 +151,7 @@ class NewUser extends React.Component {
         } 
 
         return <div className="main">
-            <Validation.Form onSubmit={this.tryCreate} ref={c => this.form = c}>
+            <Validation.Form onSubmit={::this.tryCreate} ref={c => this.form = c}>
                 <span className="form-label">All fields required unless marked optional</span>
                 <div className={inputGroupClass('name')}>
                     <label className={inputLabelClass('name')}>
@@ -166,7 +169,7 @@ class NewUser extends React.Component {
                         containerClassName={inputClass('name')}
                         onFocus={()=>this.setState({focus: 'name'})}
                         onBlur={()=>this.handleBlur('name')}
-                        onChange={()=>this.handleChange()}
+                        onChange={::this.handleChange}
                         focus={this.state.focus === 'name'}
                         validations={[{
                             rule: 'isRequired'
@@ -188,6 +191,7 @@ class NewUser extends React.Component {
                         containerClassName={inputClass('email')}
                         onFocus={()=>this.setState({focus: 'email'})}
                         onBlur={()=>this.handleBlur('email')}
+                        onChange={::this.handleChange}
                         focus={this.state.focus === 'email'}
                         validations={[{
                             rule: 'isRequired'
@@ -211,6 +215,7 @@ class NewUser extends React.Component {
                         containerClassName={inputClass('password')}
                         onFocus={()=>this.setState({focus: 'password'})}
                         onBlur={()=>this.handleBlur('password')}
+                        onChange={::this.handleChange}
                         focus={this.state.focus === 'password'}
                         validations={[{
                             rule: 'isRequired'
@@ -224,6 +229,7 @@ class NewUser extends React.Component {
                         Employer (optional)
                     </label>
                     <Validation.Input
+                        ref={c => this.employer = c}
                         name='employer'
                         wrapper={{component: InputGroup}}
                         type='text'
@@ -233,6 +239,7 @@ class NewUser extends React.Component {
                         containerClassName={inputClass('employer')}
                         onFocus={()=>this.setState({focus: 'employer'})}
                         onBlur={::this.handleBlur}
+                        onChange={::this.handleChange}
                         focus={this.state.focus === 'employer'}
                     />
                 </div>
@@ -241,6 +248,7 @@ class NewUser extends React.Component {
                         Job Title (optional)
                     </label>
                     <Validation.Input
+                        ref={c => this.job = c}
                         name='job'
                         wrapper={{component: InputGroup}}
                         type='text'
@@ -250,6 +258,7 @@ class NewUser extends React.Component {
                         containerClassName={inputClass('job')}
                         onFocus={()=>this.setState({focus: 'job'})}
                         onBlur={::this.handleBlur}
+                        onChange={::this.handleChange}
                         focus={this.state.focus === 'job'}
                     />
                 </div>
@@ -258,6 +267,7 @@ class NewUser extends React.Component {
                         Birthday (optional)
                     </label>
                     <Validation.Input
+                        ref={c => this.birthday = c}
                         name='birthday'
                         wrapper={{component: InputGroup}}
                         type='date'
@@ -267,10 +277,11 @@ class NewUser extends React.Component {
                         containerClassName={inputClass('birthday')}
                         onFocus={()=>this.setState({focus: 'birthday'})}
                         onBlur={::this.handleBlur}
+                        onChange={::this.handleChange}
                         focus={this.state.focus === 'birthday'}
                     />
                 </div>
-                <Validation.Button blocking="button" className="submit" disabledClassName="submit-disabled" value="Create New User" />
+                <Validation.Button blocking="button" className="submit" disabledClassName="submit-disabled" disabled={false} value="Create New User" />
             </Validation.Form>
         </div>
     }
