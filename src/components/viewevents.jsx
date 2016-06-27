@@ -23,20 +23,20 @@ class ViewEvents extends React.Component {
     	return <div className="main">
     		{_.keys(allEvents).length ? <div className="events">
     			{_.map(allEvents, event => {
-                    const start = moment(event['start time']).format('llll')
-                    const end = moment(event['end time']).format('llll')
+                    const start = moment(event.start).format('llll')
+                    const end = moment(event.end).format('llll')
     				return <div key={event.id} className="event-item">
                         <div className="event-row">
                             <div className="event-cell"><strong>Event</strong> </div>
-                            <div className="event-cell">{event['event name']}</div>
+                            <div className="event-cell">{event.name}</div>
                         </div>
                         <div className="event-row">
                             <div className="event-cell"><strong>Host:</strong> </div>
-                            <div className="event-cell">{_.startCase(event['event host'])}</div>
+                            <div className="event-cell">{_.startCase(event.host)}</div>
                         </div>
                         <div className="event-row">
                             <div className="event-cell"><strong>Type:</strong> </div>
-                            <div className="event-cell">{_.startCase(event['event type'])}</div>
+                            <div className="event-cell">{_.startCase(event.type)}</div>
                         </div>
                         <div className="event-row">
                             <div className="event-cell"><strong>Time:</strong> </div>
@@ -53,7 +53,7 @@ class ViewEvents extends React.Component {
                         </div>
                         <div className="event-row">
                             <div className="event-cell"><strong>Message:</strong> </div>
-                            <div className="event-cell">{event['message to guests']}</div>
+                            <div className="event-cell">{event.message}</div>
                         </div>
                     </div>
     			})}
